@@ -17,4 +17,10 @@
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
+ 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+ 
 </Project>
