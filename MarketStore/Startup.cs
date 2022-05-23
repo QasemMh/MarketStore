@@ -1,3 +1,5 @@
+using MarketStore.constants;
+using MarketStore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,8 +29,8 @@ namespace MarketStore
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddDbContext<ModelContext>(options =>
-            //options.UseOracle(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<ModelContext>(options =>
+            options.UseOracle(Configuration.GetConnectionString("Default")));
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -38,6 +40,8 @@ namespace MarketStore
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
