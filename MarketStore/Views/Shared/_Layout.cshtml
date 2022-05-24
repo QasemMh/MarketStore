@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
  
@@ -31,7 +33,7 @@
     <link rel="stylesheet" href="~/home/css/magnific-popup.css">
     <link rel="stylesheet" href="~/home/css/main.css">
 
-    
+
     @RenderSection("Style", required: false)
 
 
@@ -58,6 +60,23 @@
                             <li class="nav-item active">
                                 <a class="nav-link" asp-action="Index">Home</a>
                             </li>
+
+                            <li class="nav-item ">
+                                @if (Context.Session.GetString("userId") != null)
+                                {
+                                    <a class="nav-link" asp-action="Index">
+                                        Welcom: @Context.Session.GetString("username")
+                                    </a>
+
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="Login"
+                                   asp-controller="Authentication">Login</a>
+                                }
+                            </li>
+
+
                         </ul>
                     </div>
                 </div>
