@@ -36,7 +36,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
                asp-action="Index" asp-controller="Admin">
-                <div class="sidebar-brand-text mx-3">eSchool</div>
+                <div class="sidebar-brand-text mx-3">Market Store</div>
             </a>
 
             <!-- Divider -->
@@ -63,18 +63,22 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-users"></i>
-                    <span>Students</span>
+                    <span>Stores</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Students:</h6>
+                        <h6 class="collapse-header">Manage Stores:</h6>
                         <a class="collapse-item"
-                           asp-action="AllStudents"
-                           asp-controller="Students">All Students</a>
+                           asp-action="Index"
+                           asp-controller="Stores">All Stores</a>
 
                         <a class="collapse-item"
-                           asp-action="AddStudent"
-                           asp-controller="Students">Students Form</a>
+                           asp-action="Create"
+                           asp-controller="Stores">Add Store</a>
+
+                        <a class="collapse-item"
+                           asp-action="Index"
+                           asp-controller="StoreCategories">Stores Categories</a>
 
                     </div>
                 </div>
@@ -86,16 +90,18 @@
                    data-target="#collapseTwo3"
                    aria-expanded="true" aria-controls="collapseTwo3">
                     <i class="fas fa-fw fa-user-tie"></i>
-                    <span>Teachers</span>
+                    <span>Products</span>
                 </a>
                 <div id="collapseTwo3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Teachers:</h6>
                         <a class="collapse-item"
                            asp-action="Index"
-                           asp-controller="Teachers">All Teachers</a>
+                           asp-controller="Products">All Products</a>
                         <a class="collapse-item" asp-action="Create"
-                           asp-controller="Teachers">Teachers Form</a>
+                           asp-controller="Products">Add Products</a>
+                        <a class="collapse-item" asp-action="Index"
+                           asp-controller="Categories">Product Categories</a>
                     </div>
                 </div>
             </li>
@@ -372,12 +378,12 @@
                 </nav>
 
                 @*<nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Admin">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-action="Index">Back</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"] </li>
-                    </ol>
-                    </nav>*@
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Admin">Home</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Back</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"] </li>
+                </ol>
+                </nav>*@
 
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -427,14 +433,12 @@
                             data-dismiss="modal">
                         Cancel
                     </button>
-                    <form class="form-inline" asp-area="Identity"
-                          asp-page="/Account/Logout"
-                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit"
-                                class="nav-link btn btn-primary">
-                            Logout
-                        </button>
-                    </form>
+
+                    <a asp-action="Logout"
+                       class="nav-link btn btn-primary">
+                        Logout
+                    </a>
+
                 </div>
             </div>
         </div>

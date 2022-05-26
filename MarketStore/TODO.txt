@@ -1,0 +1,6 @@
+﻿
+        [NotMapped]
+        public IFormFile FormFile { get; set; }
+
+        **
+        [Required]

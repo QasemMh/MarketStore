@@ -51,8 +51,8 @@ namespace MarketStore.Controllers
                 }
 
 
-                HttpContext.Session.SetString("username", user.Username);
-                HttpContext.Session.SetString("userId", user.Id.ToString());
+                HttpContext.Session.SetString("username", userDb.Username);
+                HttpContext.Session.SetString("userId", userDb.Id.ToString());
 
                 string roleName = _context.Roles
                     .FirstOrDefault(r => r.Id == userDb.RoleId).Name.ToLower();
@@ -91,6 +91,8 @@ namespace MarketStore.Controllers
             {
                 AccountService accountService = new AccountService();
 
+               
+
                 if (!accountService.ValidationRegister(viewModel))
                 {
                     ModelState.AddModelError("Username", "Invalid data");
@@ -110,6 +112,7 @@ namespace MarketStore.Controllers
                     ModelState.AddModelError("Username", "Email Address already exists");
                     return View(viewModel);
                 }
+
 
 
                 Customer customer = new Customer();
