@@ -5,9 +5,7 @@ using System.Collections.Generic;
 
 namespace MarketStore.Models
 {
-
-    //category section in main website
-    public partial class Category1
+    public partial class CategorySection
     {
         public long Id { get; set; }
         public string Title { get; set; }

@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Threading.Tasks;
 
 #nullable disable
 
@@ -20,14 +19,11 @@ namespace MarketStore.Models
 
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Category1> Categories1 { get; set; }
+        public virtual DbSet<CategorySection> CategorySections { get; set; }
         public virtual DbSet<CreditCard> CreditCards { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Home> Homes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderLine> OrderLines { get; set; }
-
-
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
@@ -37,6 +33,7 @@ namespace MarketStore.Models
         public virtual DbSet<StoreCategory> StoreCategories { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserMessage> UserMessages { get; set; }
+        public virtual DbSet<WebsiteInfo> WebsiteInfos { get; set; }
 
 
 
@@ -80,7 +77,7 @@ namespace MarketStore.Models
             {
                 entity.ToTable("CATEGORY");
 
-                entity.HasIndex(e => e.Name, "SYS_C00218612")
+                entity.HasIndex(e => e.Name, "SYS_C00220502")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -100,9 +97,9 @@ namespace MarketStore.Models
                     .HasColumnName("NAME");
             });
 
-            modelBuilder.Entity<Category1>(entity =>
+            modelBuilder.Entity<CategorySection>(entity =>
             {
-                entity.ToTable("CATEGORIES");
+                entity.ToTable("CATEGORY_SECTION");
 
                 entity.Property(e => e.Id)
                     .HasPrecision(11)
@@ -123,7 +120,7 @@ namespace MarketStore.Models
             {
                 entity.ToTable("CREDIT_CARD");
 
-                entity.HasIndex(e => e.CustomerId, "SYS_C00218587")
+                entity.HasIndex(e => e.CustomerId, "SYS_C00220477")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -183,7 +180,7 @@ namespace MarketStore.Models
             {
                 entity.ToTable("CUSTOMERS");
 
-                entity.HasIndex(e => e.AddressId, "SYS_C00218578")
+                entity.HasIndex(e => e.AddressId, "SYS_C00220468")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -216,45 +213,6 @@ namespace MarketStore.Models
                     .HasForeignKey<Customer>(d => d.AddressId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("CUSTOMER_ADDRESS_ID");
-            });
-
-            modelBuilder.Entity<Home>(entity =>
-            {
-                entity.ToTable("HOME");
-
-                entity.Property(e => e.Id)
-                    .HasPrecision(11)
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.BrefDescription)
-                    .HasMaxLength(150)
-                    .IsUnicode(false)
-                    .HasColumnName("BREF_DESCRIPTION");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(60)
-                    .IsUnicode(false)
-                    .HasColumnName("EMAIL");
-
-                entity.Property(e => e.IogoImage)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("IOGO_IMAGE");
-
-                entity.Property(e => e.Location)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("LOCATION");
-
-                entity.Property(e => e.LogoName)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("LOGO_NAME");
-
-                entity.Property(e => e.Phone)
-                    .HasMaxLength(16)
-                    .IsUnicode(false)
-                    .HasColumnName("PHONE");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -486,7 +444,7 @@ namespace MarketStore.Models
                     .IsUnicode(false)
                     .HasColumnName("NAME");
 
-                entity.HasOne(d => d.Category)
+                entity.HasOne(d => d.StoreCategory)
                     .WithMany(p => p.Stores)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
@@ -497,7 +455,7 @@ namespace MarketStore.Models
             {
                 entity.ToTable("STORE_CATEGORY");
 
-                entity.HasIndex(e => e.Name, "SYS_C00218607")
+                entity.HasIndex(e => e.Name, "SYS_C00220497")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -521,16 +479,16 @@ namespace MarketStore.Models
             {
                 entity.ToTable("USERS");
 
-                entity.HasIndex(e => e.Username, "SYS_C00218597")
+                entity.HasIndex(e => e.Username, "SYS_C00220487")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Phone, "SYS_C00218598")
+                entity.HasIndex(e => e.Phone, "SYS_C00220488")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "SYS_C00218599")
+                entity.HasIndex(e => e.Email, "SYS_C00220489")
                     .IsUnique();
 
-                entity.HasIndex(e => e.CustomerId, "SYS_C00218600")
+                entity.HasIndex(e => e.CustomerId, "SYS_C00220490")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -607,6 +565,45 @@ namespace MarketStore.Models
                     .HasMaxLength(60)
                     .IsUnicode(false)
                     .HasColumnName("SUBJECT");
+            });
+
+            modelBuilder.Entity<WebsiteInfo>(entity =>
+            {
+                entity.ToTable("WEBSITE_INFO");
+
+                entity.Property(e => e.Id)
+                    .HasPrecision(11)
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.BrefDescription)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("BREF_DESCRIPTION");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("EMAIL");
+
+                entity.Property(e => e.IogoImage)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("IOGO_IMAGE");
+
+                entity.Property(e => e.Location)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("LOCATION");
+
+                entity.Property(e => e.LogoName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("LOGO_NAME");
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(16)
+                    .IsUnicode(false)
+                    .HasColumnName("PHONE");
             });
 
             modelBuilder.HasSequence("DEPT_SEQ");

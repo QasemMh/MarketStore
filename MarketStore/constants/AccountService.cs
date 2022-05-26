@@ -9,16 +9,35 @@ namespace MarketStore.constants
     public class AccountService
     {
 
-        public bool ValidationRegister(RegisterUserViewModel input)
+
+        public bool IsValidUsername(string username)
         {
             Regex usernameRegex = new Regex(@"^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,60}$", RegexOptions.IgnoreCase);
+            return usernameRegex.IsMatch(username);
+        }
+        public bool IsValidEmail(string email)
+        {
+            return new EmailAddressAttribute().IsValid(email);
+        }
+        public bool IsValidPhone(string phone)
+        {
+            var isNumeric = int.TryParse("123", out _);
+
+            if (!isNumeric) return false;
+
+            Regex phoneRegex = new Regex(@"^\d{10}$");
+            return phoneRegex.IsMatch(phone);
+        }
+
+        public bool ValidationRegister(RegisterUserViewModel input)
+        {
 
 
             if (HasEmptyFields(input))
                 return false;
-            if (!usernameRegex.IsMatch(input.Username))
+            if (!IsValidUsername(input.Username))
                 return false;
-            if (!new EmailAddressAttribute().IsValid(input.Email))
+            if (!IsValidEmail(input.Email))
                 return false;
             if (input.Password.Length < 6 || !input.Password.Equals(input.ConfirmPassword))
                 return false;

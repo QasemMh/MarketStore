@@ -1,0 +1,136 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+
+ 
+<h1 class="h3 mb-4 text-gray-800">Your Profile</h1>
+ 
+
+<div class="row">
+    @if (ViewBag.Edit == null)
+    {
+        <div class="col-md-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Details</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            Username
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Username -  @Model.Role.Name
+                        </dd>
+                        <dt class="col-sm-4">
+                            Email
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Email
+                        </dd>
+                        <dt class="col-sm-4">
+                            Phone Number
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Phone
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-muted">
+                    <a asp-action="Profile" class="btn btn-primary"
+                       asp-route-id="@Model.Id"
+                       asp-route-edit="Profile">Edit</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
+                </div>
+                <form  method="post" asp-action="ChangePassword">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="OldPassword">Old Password</label>
+                            <input type="password" name="oldPassword" id="OldPassword"
+                                   required
+                                   class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="NewPassword">New Password</label>
+                            <input type="password" name="newPassword"
+                                   required
+                                   id="NewPassword" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="ConfirmPassword">Confirm Password</label>
+                            <input type="password"
+                                   required
+                                   name="confirmPassword"
+                                   id="ConfirmPassword" class="form-control" />
+                        </div>
+                        
+                        <div class="form-group">
+                             <mark> @(ViewBag.passwordError !=null ?ViewBag.passwordError:"") </mark>
+                        </div>
+                     </div>
+                    <div class="card-footer text-muted">
+                        <button type="submit"   class="btn btn-primary">Update password</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <div class="col-md-6">
+            <form asp-action="Profile" method="post">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                         
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone" class="control-label"></label>
+                            <input asp-for="Phone" type="text" maxlength="10" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-action="Profile" class="btn btn-outline-secondary">Back</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    }
+
+</div>
+
+
+
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
