@@ -4,3 +4,12 @@
 
         **
         [Required]
+
+        **
+        add StringComparison.OrdinalIgnoreCase to all index
+        **
+        add expire date for products
+
+
+
+

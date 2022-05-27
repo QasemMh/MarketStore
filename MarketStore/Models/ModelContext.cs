@@ -35,7 +35,14 @@ namespace MarketStore.Models
         public virtual DbSet<UserMessage> UserMessages { get; set; }
         public virtual DbSet<WebsiteInfo> WebsiteInfos { get; set; }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseOracle("USER ID=TAH14_user30;PASSWORD=on12on12;DATA SOURCE=94.56.229.181:3488/traindb");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -287,6 +294,10 @@ namespace MarketStore.Models
                     .HasPrecision(11)
                     .HasColumnName("CATEGORY_ID");
 
+                entity.Property(e => e.Cost)
+                    .HasColumnType("NUMBER(6,2)")
+                    .HasColumnName("COST");
+
                 entity.Property(e => e.Description)
                     .HasMaxLength(500)
                     .IsUnicode(false)
@@ -331,21 +342,15 @@ namespace MarketStore.Models
                     .HasPrecision(11)
                     .HasColumnName("ID");
 
-                entity.Property(e => e.MainImage)
+                entity.Property(e => e.Image)
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("MAIN_IMAGE");
+                    .HasColumnName("IMAGE");
 
                 entity.Property(e => e.ProductId)
                     .HasPrecision(11)
                     .HasColumnName("PRODUCT_ID");
-
-                entity.Property(e => e.SubImage)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("SUB_IMAGE");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductImages)

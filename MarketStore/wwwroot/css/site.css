@@ -5,7 +5,7 @@
 /**/
 .my-image-container {
     max-width: 450px;
-    height: 350px;
+    min-height: 350px;
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -13,5 +13,7 @@
 }
 
 .my-grid {
-    display: grid
+    display: grid;
+    grid-template-columns:1fr;
+    gap:5px;
 }
