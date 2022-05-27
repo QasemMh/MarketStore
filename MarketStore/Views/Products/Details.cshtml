@@ -1,0 +1,84 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Store Product Details";
+}
+
+<h1 class="h3 mb-4 text-gray-800">Store Product Details</h1>
+
+<div class="row">
+    <div class="col-md-12">
+
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Store Product Details
+                </h6>
+            </div>
+            <div class="card-body">
+                <!---->
+                <div class="row">
+
+                    <div class="col-md-6 px-4">
+                        <div>
+                            <h3 class="text-dark my-4">@Model.Product.Name</h3>
+                            <h2 class="mb-4"><mark>@Model.Product.Price jo</mark> </h2>
+
+                            <p>Category: <mark>@Model.Product.Category.Name</mark></p>
+                            <p>Availibility: @Model.Product.Quantitiy in stock</p>
+                            <p>Store: @Model.Product.Store.Name</p>
+
+                            <div class="border-top my-3"></div>
+
+                            <p class="mt-4 text-justify">
+                                @Model.Product.Description
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+
+                                @for (var i = 0; i < Model.ProductImages.Count; i++)
+                                {
+                                    <li data-target="#carouselExampleIndicators"
+                                    data-slide-to="@(i)" class='@(i==0?"active":"")'></li>
+
+                                }
+
+
+                            </ol>
+
+                            <div class="carousel-inner">
+
+                                @{
+                                    int index = 1;
+                                }
+                                @foreach (var item in Model.ProductImages)
+                                {
+                                    <div class='carousel-item @(index==1?"active":"")'>
+                                        <img src="~/images/@item.Image"
+                                         class="d-block w-100" alt="product image">
+                                    </div>
+
+                                    @(index++)
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!---->
+
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Product.Id">Edit</a>
+                <a class="btn btn-secondary" asp-action="Index">Back</a>
+            </div>
+        </div>
+    </div>
+</div>

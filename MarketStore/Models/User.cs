@@ -20,6 +20,7 @@ namespace MarketStore.Models
         public virtual Role Role { get; set; }
 
 
+
         [NotMapped]
         public string Password { get; set; }
     }
