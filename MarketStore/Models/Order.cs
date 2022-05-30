@@ -17,6 +17,8 @@ namespace MarketStore.Models
         public DateTime? OrderDate { get; set; }
         public bool? Status { get; set; }
 
+       
+
         public virtual Customer Customer { get; set; }
         public virtual ICollection<OrderLine> OrderLines { get; set; }
     }
