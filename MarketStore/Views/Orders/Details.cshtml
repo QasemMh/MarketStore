@@ -1,0 +1,185 @@
+﻿@model OrderViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1 class="h3 mb-4 text-gray-800">Order Details</h1>
+
+<div class="row">
+    <div class="col-md-12">
+
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h3 class="h5 mb-2 text-gray-900">
+                            Order Info
+                        </h3>
+                        <div class="my-6"></div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong class="mr-2">Order Id:</strong> <span>@Model.Order.Id</span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <strong class="mr-2">Date:</strong> <span>@Model.Order.OrderDate</span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <strong class="mr-2">Total:</strong>
+                                <strong>@Model.OrderDetails.Select(o=>o.Product.Price * o.Quantity).Sum()</strong>
+                            </li>
+
+                            <li class="list-group-item">
+                                <strong class="mr-2">Payment method:</strong> <span>Visa</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <h3 class="h5 mb-2 text-gray-900">
+                            Customer Info
+                        </h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong class="mr-2">Name:</strong>
+                                <span>@Model.Order.Customer.FirstName @Model.Order.Customer.LastName</span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <strong class="mr-2">Username:</strong> <span>@Model.Order.Customer.User.Username</span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <strong class="mr-2">Email:</strong> <span>@Model.Order.Customer.User.Email</span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <h3 class="h5 mb-2 text-gray-900">
+                            Shipping Address
+                        </h3>
+                        @if (Model.CustomerAddress != null)
+                        {
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong class="mr-2">City:</strong> <span>@Model.CustomerAddress.City</span>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <strong class="mr-2">Address 1:</strong> <span>@Model.CustomerAddress.Address1</span>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <strong class="mr-2">More Info:</strong>
+                                    <span>@Model.CustomerAddress.Address2</span>
+                                    <br />
+                                    <span>@Model.CustomerAddress.Address3</span>
+                                </li>
+
+                            </ul>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    Order Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.OrderDetails)
+                                            {
+                                                <tr>
+                                                    <td>@item.Product.Name</td>
+                                                    <td>@item.Quantity</td>
+                                                    <td>@(item.Product.Price * item.Quantity )</td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <th colspan="2">Total</th>
+                                                <th>@Model.OrderDetails.Select(o=>o.Product.Price * o.Quantity).Sum() </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <a class="btn btn-secondary" asp-action="Index">Back</a>
+
+                <button class="btn btn-success" id="sendEmail"
+                        data-email="@Model.Order.Customer.User.Email"
+                        data-orderid="@Model.Order.Id.ToString()">
+                    Send Invoice
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+
+    <script>
+        let btn = document.querySelector("#sendEmail");
+        console.log(btn.dataset.email);
+
+        btn.addEventListener("click", () => {
+            btn.disabled = true;
+            let formData = new FormData();
+            formData.append("email", btn.dataset.email);
+            formData.append("orderId", btn.dataset.orderid + "");
+
+            fetch("/Orders/SendEmail", {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                if (res.ok) {
+                    Swal.fire(
+                        'Done!',
+                        'Invoice has been sent',
+                        'success'
+                    )
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Invoice Not sent, try again'
+                    })
+
+
+                }
+                btn.removeAttribute('disabled');
+            });
+        })
+    </script>
+
+}

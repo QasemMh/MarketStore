@@ -112,17 +112,17 @@
                    data-target="#collapseTwo4"
                    aria-expanded="true" aria-controls="collapseTwo4">
                     <i class="fas fa-fw fa-user-friends"></i>
-                    <span>Parents</span>
+                    <span>Users</span>
                 </a>
                 <div id="collapseTwo4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Parents:</h6>
+                        <h6 class="collapse-header">Manage Users:</h6>
                         <a class="collapse-item"
                            asp-action="Index"
-                           asp-controller="Parents">All Parents</a>
+                           asp-controller="Users">All Users</a>
                         <a class="collapse-item"
                            asp-action="Create"
-                           asp-controller="Parents">Parents Form</a>
+                           asp-controller="Parents">Add Users</a>
                     </div>
                 </div>
             </li>
@@ -453,7 +453,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/admin/js/sb-admin-2.min.js"></script>
+    <script src="~/js/sweetalert2.all.min.js"></script>
 
+ 
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

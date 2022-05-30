@@ -35,14 +35,6 @@ namespace MarketStore.Models
         public virtual DbSet<UserMessage> UserMessages { get; set; }
         public virtual DbSet<WebsiteInfo> WebsiteInfos { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseOracle("USER ID=TAH14_user30;PASSWORD=on12on12;DATA SOURCE=94.56.229.181:3488/traindb");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
