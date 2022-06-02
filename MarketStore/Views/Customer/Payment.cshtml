@@ -1,0 +1,106 @@
+﻿@model CreditCard
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">
+        Customer /
+    </span> Payment
+</h4>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add Payment Method</h5>
+                <small class="text-muted float-end">Credit Card</small>
+            </div>
+            <div class="card-body">
+                <form asp-action="Payment" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Name">Full Name</label>
+                        <input required type="text" asp-for="Name"
+                               class="form-control" id="basic-default-fullname" placeholder="Ahmad Ali">
+                        <span class="form-text text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="CardNumber">Card Number</label>
+                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                               required type="text" asp-for="CardNumber"
+                               maxlength="16"
+                               class="form-control" id="basic-default-fullname" placeholder="1111 2222 3333 4444">
+                        <span class="form-text text-danger" asp-validation-for="CardNumber"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ExpiryYear">Expiry Year</label>
+                        <select required class="form-select" asp-for="ExpiryYear">
+                            <optgroup label="Year">
+                                <option value="" style="display:none" disabled selected></option>
+                                <option value="2022">22</option>
+                                <option value="2023">23</option>
+                                <option value="2024">24</option>
+                                <option value="2025">25</option>
+                                <option value="infinity"><span>&#8734</span></option>
+                            </optgroup>
+                        </select>
+                        <span class="form-text text-danger" asp-validation-for="ExpiryYear"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ExpiryMonth">Expiry Month</label>
+                        <select required class="form-select" asp-for="ExpiryMonth">
+                            <optgroup label="Month">
+                                <option value="" style="display:none" disabled selected></option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </optgroup>
+                        </select>
+                        <span class="form-text text-danger" asp-validation-for="ExpiryMonth"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="SecurityCode">Security Code</label>
+                        <input required
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                               type="text" maxlength="4" asp-for="SecurityCode"
+                               class="form-control" id="basic-default-fullname" placeholder="1234">
+                        <span class="form-text text-danger" asp-validation-for="SecurityCode"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Balance"></label>
+                        <input class="form-control"
+                               type="text"
+                               readonly="readonly" asp-for="Balance">
+                    </div>
+
+                    <input type="hidden" value="@ViewBag.userId" name="userId" />
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

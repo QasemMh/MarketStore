@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title - Admin dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -62,7 +65,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-users"></i>
+                    <i class="fas fa-store"></i>
                     <span>Stores</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -89,12 +92,11 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse"
                    data-target="#collapseTwo3"
                    aria-expanded="true" aria-controls="collapseTwo3">
-                    <i class="fas fa-fw fa-user-tie"></i>
-                    <span>Products</span>
+                    <i class="fas fa-box"></i>                    <span>Products</span>
                 </a>
                 <div id="collapseTwo3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Teachers:</h6>
+                        <h6 class="collapse-header">Manage Products:</h6>
                         <a class="collapse-item"
                            asp-action="Index"
                            asp-controller="Products">All Products</a>
@@ -102,6 +104,26 @@
                            asp-controller="Products">Add Products</a>
                         <a class="collapse-item" asp-action="Index"
                            asp-controller="Categories">Product Categories</a>
+                    </div>
+                </div>
+            </li>
+
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                   data-target="#collapseTwo55"
+                   aria-expanded="true" aria-controls="collapseTwo55">
+                    <i class="fas fa-luggage-cart"></i>
+                    <span>Orders</span>
+                </a>
+                <div id="collapseTwo55" class="collapse"
+                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Manage Orders:</h6>
+                        <a class="collapse-item"
+                           asp-action="Index"
+                           asp-controller="Orders">All Orders</a>
                     </div>
                 </div>
             </li>
@@ -126,114 +148,39 @@
                     </div>
                 </div>
             </li>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                   data-target="#collapseTwo5"
-                   aria-expanded="true" aria-controls="collapseTwo5">
-                    <i class="fas fa-fw fa-graduation-cap"></i>
-                    <span>Classes</span>
-                </a>
-                <div id="collapseTwo5" class="collapse" aria-labelledby="headingTwo"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Classes:</h6>
-                        <a class="collapse-item"
-                           asp-action="Index"
-                           asp-controller="Classes">All Classes</a>
-                        <a class="collapse-item"
-                           asp-action="Create"
-                           asp-controller="Classes">Class Form</a>
-                        <a class="collapse-item"
-                           asp-action="Index"
-                           asp-controller="Subjects">Assign Subject</a>
-                    </div>
-                </div>
-            </li>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                   data-target="#collapseTwo6"
-                   aria-expanded="true" aria-controls="collapseTwo6">
-                    <i class="fab fa-fw fa-leanpub"></i>
-                    <span>Subjects</span>
-                </a>
-                <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Subjects:</h6>
-                        <a class="collapse-item"
-                           asp-action="Index"
-                           asp-controller="SubjectDetails">All Subjects</a>
-                        <a class="collapse-item"
-                           asp-action="Create"
-                           asp-controller="SubjectDetails">Subject Form</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a asp-action="Marks" asp-controller="Admin" class="nav-link">
-                    <i class="fas fa-award"></i> Marks
-                </a>
-            </li>
-
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Addons
+                Reports
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-calendar-week"></i>
-                    <span>Events</span>
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Reposts</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Events:</h6>
-                        <a class="collapse-item" asp-controller="Events" asp-action="Index">All Events</a>
-                        <a class="collapse-item" asp-controller="Events" asp-action="Create">Event Form</a>
+                        <h6 class="collapse-header">Reports</h6>
+                        <a class="collapse-item" asp-controller="Events"
+                           asp-action="Index">Reports</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesNotice"
-                   aria-expanded="true" aria-controls="collapsePagesNotice">
-                    <i class="fas fa-fw fa-bullhorn"></i>
-                    <span>Notices</span>
-                </a>
-                <div id="collapsePagesNotice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Notices:</h6>
-                        <a class="collapse-item" asp-controller="Notices" asp-action="Index">All Notices</a>
-                        <a class="collapse-item" asp-controller="Notices" asp-action="Index">Notices Page</a>
-                        <a class="collapse-item" asp-controller="Notices" asp-action="Create">Notices Form</a>
-                    </div>
-                </div>
-            </li>
+
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesMSG"
-                   aria-expanded="true" aria-controls="collapsePagesMSG">
+                <a class="nav-link" asp-action="Index" asp-controller="UserMessages">
                     <i class="fas fa-fw fa-envelope"></i>
-                    <span>Messages</span>
+                    <span>User Messages</span>
                 </a>
-                <div id="collapsePagesMSG" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Messages:</h6>
-                        <a class="collapse-item" asp-action="ShowChat" asp-controller="Admin">All Message</a>
-                        <a class="collapse-item" asp-action="Chat" asp-controller="Admin">New Message</a>
-                    </div>
-                </div>
             </li>
 
 
@@ -260,15 +207,24 @@
                      aria-labelledby="headingPages"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Users</h6>
                         <a class="collapse-item"
                            asp-action="Index"
-                           asp-controller="Users">Users</a>
+                           asp-controller="Sliders">Sliders</a>
                         <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Manage Roles</h6>
                         <a class="collapse-item"
                            asp-action="Index"
-                           asp-controller="Roles">Roles</a>
+                           asp-controller="CategorySections">Category Sections</a>
+
+                        <div class="collapse-divider"></div>
+                        <a class="collapse-item"
+                           asp-action="Index"
+                           asp-controller="Reviews">Users Reviews</a>
+                        <div class="collapse-divider"></div>
+
+                        <a class="collapse-item"
+                           asp-action="Home"
+                           asp-controller="Admin">Main Data</a>
+
                     </div>
                 </div>
             </li>
@@ -352,7 +308,20 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.Name </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+
+                                    @if (Context.Session.GetString("userId") != null)
+                                    {
+
+                                        @Context.Session.GetString("username")
+
+
+                                    }
+
+
+
+                                </span>
+
                                 <img class="img-profile rounded-circle"
                                      src="~/admin/img/undraw_profile.svg">
                             </a>
@@ -400,7 +369,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; eSchool 2021</span>
+                        <span>Copyright &copy; Market Store 2022</span>
                     </div>
                 </div>
             </footer>
@@ -455,7 +424,7 @@
     <script src="~/admin/js/sb-admin-2.min.js"></script>
     <script src="~/js/sweetalert2.all.min.js"></script>
 
- 
+
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

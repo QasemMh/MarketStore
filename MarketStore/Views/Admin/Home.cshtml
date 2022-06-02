@@ -1,0 +1,115 @@
+﻿@model WebsiteInfo
+
+@{
+    ViewData["Title"] = "Manage Website Info";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="h3 mb-4 text-gray-800">Manage Website Info</h1>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Home" asp-controller="Admin"
+              method="post" enctype="multipart/form-data">
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="IogoImage" />
+
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Add/Edie info</h6>
+                </div>
+                <div class="card-body">
+                     <div class="form-group">
+                        <label asp-for="LogoName" class="control-label"></label>
+                        <input asp-for="LogoName"
+                               placeholder="Logo"
+                               class="form-control" required />
+                        <span asp-validation-for="LogoName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email"
+                               placeholder="Email@Gmail.com"
+                               type="email" class="form-control" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone"
+                               placeholder="0790000000" class="form-control" required />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Location"
+                               placeholder="Jordan - amman"
+                               class="control-label"></label>
+                        <input asp-for="Location" class="form-control" required />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="BrefDescription" class="control-label"></label>
+                        <textarea asp-for="BrefDescription" rows="6" class="form-control" required></textarea>
+                        <span asp-validation-for="BrefDescription" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="file" accept="image/*"
+                                   class="custom-file-input" id="imageFile" asp-for="FormFile">
+                            <label class="custom-file-label" for="imageFile">Upload Image</label>
+                        </div>
+
+                        <span asp-validation-for="IogoImage" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                 </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="my-image-container my-grid" id="imgContainer">
+            <img src="~/images/@(Model.IogoImage??"")"
+                 alt="photo"
+                 class="img-fluid rounded" id="previewImg" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        let imgContainer = document.getElementById("imgContainer");
+        let imgInp = document.getElementById("imageFile");
+        let previewImg = document.getElementById("previewImg");
+
+        imgInp.onchange = evt => {
+            const [file] = imgInp.files
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
+
+                imgContainer.className = "my-image-container my-grid";
+            }
+        }
+
+    </script>
+
+
+    }
+
+

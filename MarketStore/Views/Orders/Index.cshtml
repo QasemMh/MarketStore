@@ -20,12 +20,25 @@
 
                 <div class="card-body">
                     <div class="row align-content-center">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="form-group w-50">
+                                <label for="userId">Select User</label>
                                 <select class="form-control" name="userId" id="userId"
                                         asp-items="ViewBag.Users">
-                                    <option selected disabled value="">---Select User---</option>
+                                    <option selected value="">---Select User---</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group w-50">
+                                <label for="fromDate">From</label>
+                                <input type="date" id="fromDate"
+                                       value="@(ViewBag.fromDate?? "")" class="form-control" name="fromDate" />
+                            </div>
+                            <div class="form-group w-50">
+                                <label for="toDate">To</label>
+                                <input type="date" id="toDate"
+                                       value="@(ViewBag.toDate?? "")" class="form-control" name="toDate" />
                             </div>
                         </div>
 
@@ -57,12 +70,13 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">
-                    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Add New Admin</a>
-                </h6>
+                 </h6>
 
                 <form asp-action="Index" method="get" class="form-inline mt-2">
 
                     <input type="hidden" name="userId" value="@(ViewData["UserId"] ?? "")">
+                    <input type="hidden" name="fromDate" value="@(ViewBag.fromDate ?? "")">
+                    <input type="hidden" name="toDate" value="@(ViewBag.toDate ?? "")">
 
                     <div class="form-group mx-sm-3 ">
                         <input type="text" name="searchString" class="form-control mr-sm-2" id="SearchStringId"
@@ -145,6 +159,8 @@
                    asp-route-pageNumber="@(Model.PageIndex - 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    asp-route-UserId="@ViewData["UserId"]"
+                   asp-route-toDate="@(ViewBag.toDate??"")"
+                   asp-route-fromDate="@(ViewBag.fromDate??"")"
                    class="btn btn-outline-secondary @prevDisabled">
                     Previous
                 </a>
@@ -152,6 +168,8 @@
                    asp-route-pageNumber="@(Model.PageIndex + 1)"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    asp-route-UserId="@ViewData["UserId"]"
+                   asp-route-toDate="@(ViewBag.toDate??"")"
+                   asp-route-fromDate="@(ViewBag.fromDate??"")"
                    class="btn btn-outline-primary @nextDisabled">
                     Next
                 </a>
@@ -168,7 +186,10 @@
         $("#resetBtn").on("click", function() {
             $("select").each(function() {
                 $(this).prop('selectedIndex', 0);
-            })
+            });
+            
+            $("#fromDate").val("");
+            $("#toDate").val("");
         })
     </script>
                    }

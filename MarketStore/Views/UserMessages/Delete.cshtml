@@ -1,12 +1,13 @@
-﻿@model Order
+﻿@model UserMessage
 
 @{
-    ViewData["Title"] = "Delete Order";
+    ViewData["Title"] = "Delete Message";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
 
-<h1 class="h3 mb-4 text-gray-800">Delete Order</h1>
+<h1 class="h3 mb-4 text-gray-800">Delete User Message</h1>
 
 <div class="row">
     <div class="col-md-8">
@@ -21,26 +22,18 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-4">
-                        Order Date
+                        Info
                     </dt>
                     <dd class="col-sm-8">
-                        @Model.OrderDate
-                    </dd>
-
-                    <dt class="col-sm-4">
-                        Order Status
-                    </dt>
-                    <dd class="col-sm-8">
-                        @(Model.Status == true?"Done":"Pending")
+                        @Model.Name - @Model.Email
                     </dd>
                     <dt class="col-sm-4">
-                        Customer
+                        Mesage
                     </dt>
-                    <dd class="col-sm-8">
-
-                        @Model.Customer.FirstName  @Model.Customer.LastName
+                    <dd class="col-sm-8 text-justify">
+                        @Model.Subject <br />
+                        @Model.Message
                     </dd>
-
                 </dl>
 
             </div>

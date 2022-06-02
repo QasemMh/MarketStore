@@ -1,12 +1,12 @@
-﻿@model Order
+﻿@model MarketStore.Models.Review
 
 @{
-    ViewData["Title"] = "Delete Order";
+    ViewData["Title"] = "Delete Review";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
-
-<h1 class="h3 mb-4 text-gray-800">Delete Order</h1>
+<h1 class="h3 mb-4 text-gray-800">Delete User Review</h1>
 
 <div class="row">
     <div class="col-md-8">
@@ -21,26 +21,17 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-4">
-                        Order Date
+                        Info
                     </dt>
                     <dd class="col-sm-8">
-                        @Model.OrderDate
-                    </dd>
-
-                    <dt class="col-sm-4">
-                        Order Status
-                    </dt>
-                    <dd class="col-sm-8">
-                        @(Model.Status == true?"Done":"Pending")
+                        @Model.Name - <small>@Model.JobTitle</small>
                     </dd>
                     <dt class="col-sm-4">
-                        Customer
+                        Review
                     </dt>
-                    <dd class="col-sm-8">
-
-                        @Model.Customer.FirstName  @Model.Customer.LastName
+                    <dd class="col-sm-8 text-justify">
+                        @Model.Review1
                     </dd>
-
                 </dl>
 
             </div>
