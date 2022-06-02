@@ -6,15 +6,17 @@
         [Required]
 
         **
-        add StringComparison.OrdinalIgnoreCase to all index
+        add StringComparison.OrdinalIgnoreCase to all index X
         **
         add expire date for products
-
-
-
         ***
 
 
+        admin > index
+        customer > index
 
 
-
+        **
+        add alert if no order or product or store ...
+        **
+        add active page to admin dashboard

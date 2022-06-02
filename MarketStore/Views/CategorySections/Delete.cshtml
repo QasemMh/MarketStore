@@ -1,12 +1,12 @@
-﻿@model Order
+﻿@model CategorySection
 
 @{
-    ViewData["Title"] = "Delete Order";
+    ViewData["Title"] = "Delete Item";
 }
+ 
 
 
-
-<h1 class="h3 mb-4 text-gray-800">Delete Order</h1>
+<h1 class="h3 mb-4 text-gray-800">Delete  Item</h1>
 
 <div class="row">
     <div class="col-md-8">
@@ -21,25 +21,21 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-4">
-                        Order Date
+                        Name
                     </dt>
                     <dd class="col-sm-8">
-                        @Model.OrderDate
+                        @Model.Title
                     </dd>
 
                     <dt class="col-sm-4">
-                        Order Status
+                        Image
                     </dt>
-                    <dd class="col-sm-8">
-                        @(Model.Status == true?"Done":"Pending")
+                    <dd class="col-sm-12">
+                        <div class="my-image-container">
+                            <img src="~/images/@Model.Image" class="img-fluid" />
+                        </div>
                     </dd>
-                    <dt class="col-sm-4">
-                        Customer
-                    </dt>
-                    <dd class="col-sm-8">
 
-                        @Model.Customer.FirstName  @Model.Customer.LastName
-                    </dd>
 
                 </dl>
 

@@ -1,0 +1,68 @@
+﻿@model OrderViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">
+        Customer /
+    </span> Order Details
+</h4>
+
+
+<!---->
+<div class="card">
+    <h5 class="card-header">Order Details</h5>
+
+    <div class="card-body">
+
+        <div class="fw-bold py-3 mb-4">
+            <h5> Id: @Model.Order.Id</h5>
+            <h5>Date: @Model.Order.OrderDate</h5>
+            <h5>
+                Status: @(Model.Order.Status==true? "Completed":"Pending")
+            </h5>
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th scope="col">#Id</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @{
+                        int index = 1;
+                    }
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@(index++)</td>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Product.Price * item.Quantity )</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="3">Total Price</th>
+                        <th>@Model.OrderDetails.Select(o=>o.Product.Price * o.Quantity).Sum() </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer text-muted">
+        <a asp-action="Orders" asp-controller="Customer"
+           class="btn btn-outline-secondary">Back</a>
+    </div>
+
+</div>
+<!---->

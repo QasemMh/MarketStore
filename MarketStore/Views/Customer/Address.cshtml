@@ -1,0 +1,69 @@
+﻿@model Address
+@{
+    ViewData["Title"] = "Address";
+}
+
+
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">
+        Customer /
+    </span> Address
+</h4>
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card mb-4">
+            <h5 class="card-header">Your Address</h5>
+            <!-- Account -->
+            <hr class="my-0">
+            <div class="card-body">
+                <form asp-action="Address" method="POST">
+                    <input type="hidden" value="@ViewBag.addressId" name="addressId" />
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="Address1" class="form-label">Address 1</label>
+                            <input class="form-control"
+                                   required type="text" asp-for="Address1" autofocus="">
+                        </div>
+
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="City" class="form-label">City </label>
+                            <input class="form-control" required type="text" asp-for="City" autofocus="">
+                        </div>
+
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="Address2" class="form-label">Address 2(optinal)</label>
+                            <input class="form-control" required type="text" asp-for="Address2" />
+                        </div>
+
+                        <div class="mb-3 col-md-6">
+                            <label asp-for="Address3" class="form-label">Address 3(optinal)</label>
+                            <input class="form-control" type="text" asp-for="Address3" />
+                        </div>
+
+                        <div class="my-2">
+                            <span class="text-danger" asp-validation-for="Address1"></span>
+
+                        </div>
+
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /Account -->
+        </div>
+    </div>
+</div>
+
+
+                        @section Scripts {
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

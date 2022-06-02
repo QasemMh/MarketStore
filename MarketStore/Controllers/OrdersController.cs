@@ -27,7 +27,8 @@ namespace MarketStore.Controllers
 
         // GET: Orders
         public async Task<IActionResult> Index(string currentFilter,
-            string searchString, int? pageNumber, long? userId)
+            string searchString, int? pageNumber, long? userId,
+            DateTime? fromDate, DateTime? toDate)
         {
             if (searchString != null)
             {
@@ -40,6 +41,8 @@ namespace MarketStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
             ViewData["userId"] = userId;
+            ViewBag.fromDate = fromDate.HasValue ? fromDate.Value.ToString("yyyy-MM-dd") : "";
+            ViewBag.toDate = toDate.HasValue ? toDate.Value.ToString("yyyy-MM-dd") : "";
 
 
             var customers = await _context.Users
@@ -60,15 +63,26 @@ namespace MarketStore.Controllers
             {
                 orders = orders.Where(p => p.CustomerId == userId);
             }
-
-
-
+            if (fromDate.HasValue && !toDate.HasValue)
+            {
+                orders = orders.Where(p =>
+                p.OrderDate.Value.Year == fromDate.Value.Year
+                && p.OrderDate.Value.Month == fromDate.Value.Month
+                && p.OrderDate.Value.Day == fromDate.Value.Day
+                );
+            }
+            if (fromDate.HasValue && toDate.HasValue)
+            {
+                orders = orders.Where(p => p.OrderDate.Value >= fromDate.Value &&
+                p.OrderDate.Value <= toDate.Value);
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 orders = orders.Where(s =>
                   s.Customer.User.Username.StartsWith(searchString)
                 );
             }
+
             int pageSize = 20;
             return View(await PaginatedList<Order>.CreateAsync(orders.AsNoTracking(),
                 pageNumber ?? 1, pageSize));
