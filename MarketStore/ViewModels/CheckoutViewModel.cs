@@ -1,4 +1,6 @@
-﻿using MarketStore.Models;
+﻿using MarketStore.constants;
+using MarketStore.Models;
+using System.Collections.Generic;
 
 namespace MarketStore.ViewModels
 {
@@ -6,5 +8,6 @@ namespace MarketStore.ViewModels
     {
         public Address Address { get; set; }
         public CreditCard CreditCard { get; set; }
+        public List<CartItem> Cart { get; set; }
     }
 }

@@ -64,7 +64,7 @@
 
                     <div class="form-group">
                         <div class="custom-file">
-                            <input type="file" accept="image/*" multiple required
+                            <input type="file" accept="image/*" multiple
                                    class="custom-file-input" id="imageFile" asp-for="Product.FormFiles">
                             <label class="custom-file-label" for="imageFile">Update Images(up to five images)</label>
                         </div>
@@ -88,7 +88,7 @@
             @if (Model.ProductImages != null)
                 @foreach (var item in Model.ProductImages)
                 {
-                    <img src="~/images/@item.Image"
+                            <img src="~/images/@item.Image"
                  class="img-fluid rounded" />
                 }
 
@@ -103,29 +103,29 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <script>
-        let imgContainer = document.getElementById("imgContainer");
-        let imgInp = document.getElementById("imageFile");
-        let previewImg = document.getElementById("previewImg");
+        <script>
+            let imgContainer = document.getElementById("imgContainer");
+            let imgInp = document.getElementById("imageFile");
+            let previewImg = document.getElementById("previewImg");
 
-        imgInp.onchange = evt => {
-            const files = imgInp.files
-            if (files) {
-                let items = "";
-                for (let item of files) {
-                    items += `
-                                   <img src="${URL.createObjectURL(item)}"
-                                         class="img-fluid rounded" />
-                                                                                            `;
+            imgInp.onchange = evt => {
+                const files = imgInp.files
+                if (files) {
+                    let items = "";
+                    for (let item of files) {
+                        items += `
+                                               <img src="${URL.createObjectURL(item)}"
+                                                     class="img-fluid rounded" />
+                                                                                                        `;
+                    }
+                    imgContainer.innerHTML = items;
+                    imgContainer.className = "my-image-container my-grid";
+
                 }
-                imgContainer.innerHTML = items;
-                imgContainer.className = "my-image-container my-grid";
 
             }
 
-        }
-
-    </script>
+        </script>
 
 
     }

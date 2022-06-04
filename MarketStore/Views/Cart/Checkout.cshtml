@@ -79,11 +79,27 @@
                     <div class="order_box">
                         <h2>Your Order</h2>
                         <ul class="list">
-                            <li><a href="#">Product <span>Total</span></a></li>
-                            <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
+                            <li>Product <span>Total</span></li>
+                            @foreach (var item in Model.Cart)
+                            {
+                                <li>
+                                    <a href="#">
+                                        @item.Product.Name
+                                        <span class="middle">x@(item.Quantity)</span>
+                                        <span class="last">@(item.Quantity * item.Product.Price)</span>
+                                    </a>
+                                </li>
+                            }
+
                         </ul>
                         <ul class="list list_2">
-                            <li><a href="#">Total <span>$2210.00</span></a></li>
+                            <li>
+                                <a href="#">
+                                    Total <span>
+                                        @Model.Cart.Sum(item => item.Product.Price * item.Quantity)
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
 
 
@@ -118,10 +134,11 @@
                     if (res.ok) {
                         Swal.fire(
                             'Good job!',
-                            'You clicked the button!',
+                            'Your Order Confirm!',
                             'success'
                         )
-                        checkout.removeAttribute('disabled');
+
+                        location.href = "\Confirmation";
                     } else {
                         Swal.fire({
                             icon: 'error',

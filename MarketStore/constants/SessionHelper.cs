@@ -14,6 +14,10 @@ namespace MarketStore.constants
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
         }
+        public static void RemoveSession(this ISession session, string key)
+        {
+            session.Remove(key);
+        }
 
         public static T GetObjectFromJson<T>(this ISession session, string key)
         {

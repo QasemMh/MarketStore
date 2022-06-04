@@ -17,7 +17,6 @@ namespace MarketStore.Controllers
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-
         public AdminController(ModelContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -47,8 +46,12 @@ namespace MarketStore.Controllers
 
         public IActionResult Report()
         {
-            return View();
+            return View(_context.Products.ToList());
         }
+
+
+
+
 
 
         public async Task<IActionResult> Home()
@@ -111,19 +114,6 @@ namespace MarketStore.Controllers
             ModelState.AddModelError("IogoImage", "File Not Uploaded, please try again");
             return View(info);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public async Task<IActionResult> Profile(string edit)
         {

@@ -1,4 +1,5 @@
-﻿using MarketStore.Models;
+﻿using MarketStore.constants;
+using MarketStore.Models;
 using MarketStore.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,37 @@ namespace MarketStore.Controllers
         }
 
 
+        public async Task<IActionResult> Shop(string currentFilter, string searchString, int? pageNumber)
+        {
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var products = _context.Products
+                .Include(p => p.Store).Include(p => p.ProductImages)
+                .AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.Contains(searchString));
+            }
+            int pageSize = 12;
+            return View(await PaginatedList<Product>.CreateAsync(products.AsNoTracking(),
+                pageNumber ?? 1, pageSize));
+        }
+        public async Task<IActionResult> Product(long? id)
+        {
+            return View();
+        }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Contact()
@@ -47,7 +79,7 @@ namespace MarketStore.Controllers
         }
 
         [HttpPost]
-         public async Task<IActionResult> SendMessage([FromForm] string name, [FromForm] string email,
+        public async Task<IActionResult> SendMessage([FromForm] string name, [FromForm] string email,
             [FromForm] string subject, [FromForm] string message)
         {
 
