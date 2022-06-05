@@ -1,0 +1,103 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+                <nav class="d-flex align-items-center">
+                    <a asp-action="Index" asp-controller="Home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <span>Confirmation</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="order_details section_gap" id="print-content">
+    <div class="container">
+        <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
+        <div class="row order_d_inner">
+            <div class="col-lg-6">
+                <div class="details_item">
+                    <h4>Order Info</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Order number</span> : @Model.Order.Id</a></li>
+                        <li><a href="#"><span>Date</span> : @Model.Order.OrderDate.Value.ToString("yyyy-MM-dd")</a></li>
+                        <li><a href="#"><span>Total</span> : @Model.OrderDetails.Select(p=>p.Product.Price * p.Quantity).Sum()</a></li>
+                        <li><a href="#"><span>Payment method</span> : Visa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="details_item">
+                    <h4>Billing Address</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>City</span> : @Model.CustomerAddress.City</a></li>
+                        <li><a href="#"><span>Address 1 </span>  @Model.CustomerAddress.Address1</a></li>
+                        <li><a href="#"><span>Address 2 </span> :  @Model.CustomerAddress.Address2</a></li>
+                        <li><a href="#"><span>Address 3 </span> : @Model.CustomerAddress.Address3</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="order_details_table">
+            <h2>Order Details</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>@item.Product.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@(item.Product.Price * item.Quantity)</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td>
+                                <h4>Total</h4>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <p>@Model.OrderDetails.Select(p=>p.Product.Price * p.Quantity).Sum()</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="w-100 text-center">
+            <button class="btn primary-btn mt-4" onclick="window.print()">Download Order Details</button>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+
+    </script>
+
+
+}

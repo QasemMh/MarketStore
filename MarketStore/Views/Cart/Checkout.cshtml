@@ -1,0 +1,155 @@
+﻿@model CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a asp-action="Index" asp-controller="Home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="checkout_area section_gap">
+    <div class="container">
+
+
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Billing Details</h3>
+                    <!---->
+                    @if ((bool)ViewBag.HasVisa && (bool)ViewBag.HasAddress)
+                    {
+                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.Name" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.CardNumber" class="form-control" readonly />
+                            </div>
+
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.ExpiryYear" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.ExpiryMonth" class="form-control" readonly />
+                            </div>
+
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.SecurityCode" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="CreditCard.Balance" class="form-control" readonly />
+                            </div>
+
+
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="Address.City" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" asp-for="Address.Address1" class="form-control" readonly />
+                            </div>
+
+
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            You Must Add Credit Cards And Address First <strong>
+                                <a asp-action="Index"
+                               asp-controller="Customer">Dashboard</a>
+                            </strong>
+                        </div>
+                    }
+                    <!---->
+                </div>
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li>Product <span>Total</span></li>
+                            @foreach (var item in Model.Cart)
+                            {
+                                <li>
+                                    <a href="#">
+                                        @item.Product.Name
+                                        <span class="middle">x@(item.Quantity)</span>
+                                        <span class="last">@(item.Quantity * item.Product.Price)</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="list list_2">
+                            <li>
+                                <a href="#">
+                                    Total <span>
+                                        @Model.Cart.Sum(item => item.Product.Price * item.Quantity)
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+
+
+                        <div class="creat_account">
+                            <input type="checkbox" id="f-option4" name="selector">
+                            <label for="f-option4">I’ve read and accept the </label>
+                            <a href="#">terms &amp; conditions*</a>
+                        </div>
+
+                        @if ((bool)ViewBag.HasVisa && (bool)ViewBag.HasAddress)
+                        {
+                            <button class="btn w-100 primary-btn" id="checkout-btn">Checkout</button>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        let checkout = document.getElementById("checkout-btn");
+        if (checkout) {
+            checkout.addEventListener("click", () => {
+                checkout.disabled = true;
+                fetch("Checkout", {
+                    method: 'POST'
+                }).then(res => {
+                    if (res.ok) {
+                        Swal.fire(
+                            'Good job!',
+                            'Your Order Confirm!',
+                            'success'
+                        )
+
+                        location.href = "\Confirmation";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+
+                    }
+                });
+            })
+        }
+
+    </script>
+  }

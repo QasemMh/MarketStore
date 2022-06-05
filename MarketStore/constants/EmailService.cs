@@ -12,9 +12,9 @@ namespace MarketStore.constants
     {
 
 
-        private static string GetHtmlBody(OrderViewModel data, string rootPath)
+        private static string GetHtmlBody(OrderViewModel data, string contentRootPath)
         {
-            string htmlTemplateFile = System.IO.File.ReadAllText(System.IO.Path.Combine(rootPath +
+            string htmlTemplateFile = System.IO.File.ReadAllText(System.IO.Path.Combine(contentRootPath +
                 "/constants/CustomerInvoice.html"));
 
             StringBuilder htmlTemplate = new StringBuilder();
@@ -51,11 +51,11 @@ namespace MarketStore.constants
             return htmlTemplate.ToString();
         }
 
-        public static async Task<bool> SendAsync(OrderViewModel data, string rootPath)
+        public static async Task<bool> SendAsync(OrderViewModel data, string contentRootPath)
         {
             try
             {
-                string body = GetHtmlBody(data, rootPath);
+                string body = GetHtmlBody(data, contentRootPath);
 
                 using SmtpClient mySmtpClient = new SmtpClient("smtp.gmail.com", 587);
                 mySmtpClient.EnableSsl = true;

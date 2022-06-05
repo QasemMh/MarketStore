@@ -57,14 +57,14 @@ namespace MarketStore.Controllers
                 string roleName = _context.Roles
                     .FirstOrDefault(r => r.Id == userDb.RoleId).Name.ToLower();
 
+                HttpContext.Session.SetString("roleName", roleName);
 
                 switch (roleName)
                 {
                     case "admin":
                         return RedirectToAction("Index", "Admin"); //admin dashboard
                     case "customer":
-                        return RedirectToAction("Index", "Customer"); //customer dashboard
-                    default: return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
                 }
 
 
@@ -91,7 +91,7 @@ namespace MarketStore.Controllers
             {
                 AccountService accountService = new AccountService();
 
-               
+
 
                 if (!accountService.ValidationRegister(viewModel))
                 {
@@ -144,6 +144,7 @@ namespace MarketStore.Controllers
 
                 HttpContext.Session.SetString("username", user.Username);
                 HttpContext.Session.SetString("userId", user.Id.ToString());
+                HttpContext.Session.SetString("roleName", "customer");
 
                 return RedirectToAction("Index", "Home");
             }
