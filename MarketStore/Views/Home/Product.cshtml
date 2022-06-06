@@ -1,8 +1,127 @@
-﻿
+﻿@model ProductViewModel
+
 @{
     ViewData["Title"] = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shop</h1>
+                <nav class="d-flex align-items-center">
+                    <a asp-action="Index" asp-controller="Home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">
+                        Product Details - @Model.Product.Name
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
 
-<h1>Product</h1>
 
+<div class="product_image_area" style="padding: 120px 0;">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-6">
+                <div class="s_Product_carousel owl-carousel owl-theme">
+                    @foreach (var item in Model.ProductImages)
+                    {
+                        <div class="" style="">
+                            <div class="">
+                                <img class="img-fluid" src="~/images/@item.Image" alt="photo">
+                            </div>
+                        </div>
+                    }
+
+
+
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1 mb-4">
+                <div class="s_product_text">
+                    <h3>@Model.Product.Name</h3>
+                    <h2>@Model.Product.Price</h2>
+                    <ul class="list">
+                        <li>
+                            <a class="active"
+                               asp-action="Shop" asp-controller="Home"
+                               asp-route-productCategoryId="@Model.Product.CategoryId">
+                                <span>Category</span> : @Model.Product.Category.Name
+                            </a>
+                        </li>
+                        <li>
+                            <a class="active"
+                               asp-action="Shop" asp-controller="Home" asp-route-storeId="@Model.Product.Store.Id">
+                                <span>Store</span> : @Model.Product.Store.Name
+                            </a>
+                        </li>
+                        <li><a href="#"><span>Availibility</span> :@Model.Product.Quantitiy In Stock</a></li>
+                    </ul>
+                    <p class="text-justify">
+                        @Model.Product.Description
+                    </p>
+
+                    <div class="card_area d-flex align-items-center">
+                        <button class="btn primary-btn addToCart w-100" style="border-radius:none"
+                                data-itemid="@Model.Product.Id">
+                            Add To Cart
+                        </button>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        let btns = document.querySelectorAll(".addToCart");
+
+        btns.forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                console.log(btn);
+
+                btn.disabled = true;
+
+                let formData = new FormData();
+                formData.append("id", btn.dataset.itemid);
+
+                fetch("/Cart/Add", {
+                    method: 'POST',
+                    body: formData
+                }).then(res => {
+                    if (res.ok) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Item Added To Cart',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'try again'
+                        })
+
+
+                    }
+                    btn.removeAttribute('disabled');
+                });
+            });
+
+        })
+    </script>
+
+}

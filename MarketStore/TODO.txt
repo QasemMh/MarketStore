@@ -6,15 +6,16 @@
         [Required]
 
         **
-        add StringComparison.OrdinalIgnoreCase to all index X
-        **
+         **
         add expire date for products
         ***
 
 
         admin > index
         customer > index
-
+        **
+          [NotMapped]
+        public string Password { get; set; }
 
         **
         add alert if no order or product or store ...

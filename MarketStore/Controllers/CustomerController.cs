@@ -119,8 +119,8 @@ namespace MarketStore.Controllers
             var user = await _context.Users
                 .Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == userId);
 
-            var orders = _context.Orders
-                .Where(c => c.CustomerId == user.CustomerId);
+            var orders = (IQueryable<Order>)_context.Orders
+                .Where(c => c.CustomerId == user.CustomerId).OrderByDescending(o => o.Id);
 
             if (fromDate.HasValue && !toDate.HasValue)
             {
@@ -137,9 +137,12 @@ namespace MarketStore.Controllers
             }
 
 
-            int pageSize = 20;
-            return View(await PaginatedList<Order>.CreateAsync(orders.AsNoTracking(),
-                pageNumber ?? 1, pageSize));
+            int pageSize = 10;
+            var model = await PaginatedList<Order>.CreateAsync(orders.AsNoTracking(),
+                pageNumber ?? 1, pageSize);
+
+
+            return View(model);
         }
 
         public async Task<IActionResult> OrderDetails(long? id)

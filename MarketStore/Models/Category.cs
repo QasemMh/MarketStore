@@ -20,7 +20,9 @@ namespace MarketStore.Models
 
         public virtual ICollection<Product> Products { get; set; }
 
+
         [NotMapped]
         public IFormFile FormFile { get; set; }
+
     }
 }

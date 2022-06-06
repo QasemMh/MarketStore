@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -10,9 +9,7 @@ namespace MarketStore.Models
     public partial class User
     {
         public long Id { get; set; }
-        [Required]
         public string Username { get; set; }
-        
         public string HashPassword { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -21,7 +18,6 @@ namespace MarketStore.Models
 
         public virtual Customer Customer { get; set; }
         public virtual Role Role { get; set; }
-
 
 
         [NotMapped]
