@@ -29,14 +29,17 @@ namespace MarketStore
         public void ConfigureServices(IServiceCollection services)
         {
 
+ 
             services.AddDbContext<ModelContext>(options =>
             options.UseOracle(Configuration.GetConnectionString("Default")));
+ 
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
 
 
+ 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();
