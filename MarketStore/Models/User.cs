@@ -16,6 +16,8 @@ namespace MarketStore.Models
         public long? CustomerId { get; set; }
         public long RoleId { get; set; }
 
+        public DateTime? CreateAt { get; set; }
+
         public virtual Customer Customer { get; set; }
         public virtual Role Role { get; set; }
 

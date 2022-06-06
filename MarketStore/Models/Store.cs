@@ -12,6 +12,8 @@ namespace MarketStore.Models
             Products = new HashSet<Product>();
         }
 
+        public DateTime? CreateAt { get; set; }
+
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

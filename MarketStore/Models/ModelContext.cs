@@ -279,6 +279,11 @@ namespace MarketStore.Models
             {
                 entity.ToTable("PRODUCTS");
 
+                entity.Property(e => e.CreateAt)
+             .HasPrecision(6)
+             .HasDefaultValueSql("current_timestamp")
+             .HasColumnName("CREATE_AT");
+
                 entity.Property(e => e.Id)
                     .HasPrecision(11)
                     .HasColumnName("ID");
@@ -478,6 +483,11 @@ namespace MarketStore.Models
                     .IsUnicode(false)
                     .HasColumnName("NAME");
 
+                entity.Property(e => e.CreateAt)
+                .HasPrecision(6)
+                .HasDefaultValueSql("current_timestamp")
+                .HasColumnName("CREATE_AT");
+
                 entity.HasOne(d => d.StoreCategory)
                     .WithMany(p => p.Stores)
                     .HasForeignKey(d => d.CategoryId)
@@ -524,6 +534,11 @@ namespace MarketStore.Models
 
                 entity.HasIndex(e => e.CustomerId, "SYS_C00220490")
                     .IsUnique();
+
+                entity.Property(e => e.CreateAt)
+             .HasPrecision(6)
+             .HasDefaultValueSql("current_timestamp")
+             .HasColumnName("CREATE_AT");
 
                 entity.Property(e => e.Id)
                     .HasPrecision(11)
