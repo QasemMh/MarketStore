@@ -29,7 +29,9 @@ namespace MarketStore.Controllers
             {
                 Sliders = await _context.Sliders.ToListAsync(),
                 CategoryList = await _context.StoreCategories.Take(10).ToListAsync(),
-                Products = await _context.Products.Include(p => p.Store).Include(p => p.ProductImages)
+                Products = await _context.Products
+                .Include(p => p.Store).Include(p => p.ProductImages)
+                .Where(p => p.Quantitiy > 0 && p.ExpireDate.Value.Date > DateTime.Now.Date)
                 .Take(16).ToListAsync()
             };
 
@@ -40,7 +42,9 @@ namespace MarketStore.Controllers
         }
 
 
-        public async Task<IActionResult> Shop(string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Shop(string currentFilter, string searchString,
+            long? storeCategoryId, long? productCategoryId, long? storeId,
+            decimal? minPrice, decimal? maxPrice, int? pageNumber)
         {
             if (searchString != null)
             {
@@ -52,22 +56,83 @@ namespace MarketStore.Controllers
             }
 
             ViewData["CurrentFilter"] = searchString;
+            ViewData["StoreCategoryId"] = storeCategoryId;
+            ViewData["ProductCategoryId"] = productCategoryId;
+            ViewData["StoreId"] = storeId;
+            ViewData["MinPrice"] = minPrice;
+            ViewData["MaxPrice"] = maxPrice;
+
 
             var products = _context.Products
                 .Include(p => p.Store).Include(p => p.ProductImages)
+                .Where(p => p.Quantitiy > 0 && p.ExpireDate.Value.Date > DateTime.Now.Date)
                 .AsQueryable();
+
+            if (storeId != null)
+            {
+                products = products.Where(p => p.Store.Id == storeId);
+            }
+            if (storeCategoryId != null)
+            {
+                products = products.Where(p => p.Store.CategoryId == storeCategoryId);
+            }
+            if (productCategoryId != null)
+            {
+                products = products.Where(p => p.CategoryId == productCategoryId);
+            }
+            //price
+            if (minPrice.HasValue && maxPrice.HasValue)
+            {
+                products = products.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
+            }
+            else if (minPrice.HasValue)
+            {
+                products = products.Where(p => p.Price >= minPrice);
+            }
+            else if (maxPrice.HasValue)
+            {
+                products = products.Where(p => p.Price <= maxPrice);
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.Contains(searchString));
+                products = products.Where(s => s.Store.Name.StartsWith(searchString) ||
+                s.Name.Contains(searchString));
             }
+
+            var storesCategories = await _context.StoreCategories.ToListAsync();
+            var productCategories = await _context.Categories.ToListAsync();
+            var stores = await _context.Stores.ToListAsync();
+
+
             int pageSize = 12;
-            return View(await PaginatedList<Product>.CreateAsync(products.AsNoTracking(),
-                pageNumber ?? 1, pageSize));
+            var viewModel = new ShopViewModel
+            {
+                Products = await PaginatedList<Product>.CreateAsync(products.AsNoTracking(),
+                pageNumber ?? 1, pageSize),
+                StoresCategories = storesCategories,
+                ProductsCategories = productCategories,
+                Stores = stores
+            };
+            return View(viewModel);
         }
         public async Task<IActionResult> Product(long? id)
         {
-            return View();
+            if (id == null) return NotFound();
+
+            var product = await _context.Products
+                .Include(s => s.Store).Include(s => s.Category)
+                .FirstOrDefaultAsync(p => p.Id == id &&
+                p.Quantitiy > 0 &&
+                p.ExpireDate.Value.Date > DateTime.Now.Date);
+
+            if (product == null) return NotFound();
+
+            var images = await _context.ProductImages
+                .Where(p => p.ProductId == product.Id).ToListAsync();
+
+
+            return View(new ProductViewModel { Product = product, ProductImages = images });
         }
 
 

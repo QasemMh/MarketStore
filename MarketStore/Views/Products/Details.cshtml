@@ -25,9 +25,12 @@
                             <h3 class="text-dark my-4">@Model.Product.Name</h3>
                             <h2 class="mb-4"><mark>@Model.Product.Price jo</mark> </h2>
 
-                            <p>Category: <mark>@Model.Product.Category.Name</mark></p>
-                            <p>Availibility: @Model.Product.Quantitiy in stock</p>
+                            <p>Category: @Model.Product.Category.Name</p>
                             <p>Store: @Model.Product.Store.Name</p>
+                            <p>Availibility: <mark>@Model.Product.Quantitiy</mark> in stock</p>
+                            <p>Expire Date: <mark>@Model.Product.ExpireDate.Value.ToString("yyyy-MM-dd")</mark></p>
+
+
 
                             <div class="border-top my-3"></div>
 

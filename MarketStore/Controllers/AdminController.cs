@@ -46,6 +46,7 @@ namespace MarketStore.Controllers
 
         public IActionResult Report()
         {
+             
             return View(_context.Products.ToList());
         }
 

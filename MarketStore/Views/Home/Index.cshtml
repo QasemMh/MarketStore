@@ -123,7 +123,9 @@
                                     <img style="height:223px"
                                  class="img-fluid w-100" src="~/images/@item.Image"
                                  alt="photo-@(flag= false)">
-                                    <a href="#">
+                                    <a asp-action="Shop"
+                               asp-controller="Home"
+                               asp-route-storeCategoryId="@item.Id">
                                         <div class="deal-details">
                                             <h6 class="deal-title"> @item.Name</h6>
                                         </div>
@@ -139,7 +141,9 @@
                                     <img style="height:223px"
                                  class="img-fluid w-100" src="~/images/@item.Image"
                                  alt="photo-@(flag= true)">
-                                    <a href="#">
+                                    <a asp-action="Shop"
+                               asp-controller="Home"
+                               asp-route-storeCategoryId="@item.Id">
                                         <div class="deal-details">
                                             <h6 class="deal-title">@item.Name</h6>
                                         </div>
@@ -165,7 +169,7 @@
                     <img class="img-fluid w-100" src="~/home/img/category/c5.jpg" alt="">
                     <a href="~/home/img/category/c5.jpg" class="img-pop-up" target="_blank">
                         <div class="deal-details">
-                            <h6 class="deal-title">Sneaker for Sports</h6>
+                            <h6 class="deal-title">See Discounted Product</h6>
                         </div>
                     </a>
                 </div>
@@ -204,12 +208,21 @@
                             <img class="img-fluid" src="~/images/@item.ProductImages.ToArray()[0].Image" alt="">
                             <div class="product-details">
                                 <h6>
-                                    3
-                                    <a href="#" class="h6">@item.Name</a>
+
+                                    <a asp-action="Product"
+                                   asp-controller="Home"
+                                   asp-route-id="@item.Id"
+                                   class="h6">@item.Name</a>
                                 </h6>
                                 <div class="price">
                                     <h6>@(String.Format("{0:0.0#}",item.Price))</h6>
-                                    <h6 class="l-through">@item.Store.Name</h6>
+                                    <h6 class="l-through">
+                                        <a asp-action="Shop"
+                                       asp-controller="Home"
+                                       asp-route-storeId="@item.Store.Id">
+                                            @item.Store.Name
+                                        </a>
+                                    </h6>
                                 </div>
                                 <div class="prd-bottom">
 

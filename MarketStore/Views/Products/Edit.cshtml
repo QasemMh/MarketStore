@@ -47,6 +47,15 @@
                         <input type="number" step="1" min="1" asp-for="Product.Quantitiy" class="form-control" />
                         <span asp-validation-for="Product.Quantitiy" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group">
+                        <label asp-for="Product.ExpireDate" class="control-label">Expire Date</label>
+                        <input type="date" asp-for="Product.ExpireDate" class="form-control" required />
+                        <span asp-validation-for="Product.ExpireDate" class="text-danger"></span>
+                    </div>
+
+
+
                     <div class="form-group">
                         <label asp-for="Product.CategoryId" class="control-label"></label>
                         <select asp-for="Product.CategoryId" required class="form-control"
@@ -88,7 +97,7 @@
             @if (Model.ProductImages != null)
                 @foreach (var item in Model.ProductImages)
                 {
-                            <img src="~/images/@item.Image"
+                    <img src="~/images/@item.Image"
                  class="img-fluid rounded" />
                 }
 
@@ -103,29 +112,29 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-        <script>
-            let imgContainer = document.getElementById("imgContainer");
-            let imgInp = document.getElementById("imageFile");
-            let previewImg = document.getElementById("previewImg");
+    <script>
+        let imgContainer = document.getElementById("imgContainer");
+        let imgInp = document.getElementById("imageFile");
+        let previewImg = document.getElementById("previewImg");
 
-            imgInp.onchange = evt => {
-                const files = imgInp.files
-                if (files) {
-                    let items = "";
-                    for (let item of files) {
-                        items += `
-                                               <img src="${URL.createObjectURL(item)}"
-                                                     class="img-fluid rounded" />
-                                                                                                        `;
-                    }
-                    imgContainer.innerHTML = items;
-                    imgContainer.className = "my-image-container my-grid";
-
+        imgInp.onchange = evt => {
+            const files = imgInp.files
+            if (files) {
+                let items = "";
+                for (let item of files) {
+                    items += `
+                                                                                               <img src="${URL.createObjectURL(item)}"
+                                                                                                     class="img-fluid rounded" />
+                                                                                                                                                        `;
                 }
+                imgContainer.innerHTML = items;
+                imgContainer.className = "my-image-container my-grid";
 
             }
 
-        </script>
+        }
+
+    </script>
 
 
     }

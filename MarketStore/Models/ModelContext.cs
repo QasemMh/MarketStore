@@ -25,6 +25,7 @@ namespace MarketStore.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderLine> OrderLines { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductDiscount> ProductDiscounts { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -278,6 +279,11 @@ namespace MarketStore.Models
             {
                 entity.ToTable("PRODUCTS");
 
+                entity.Property(e => e.CreateAt)
+             .HasPrecision(6)
+             .HasDefaultValueSql("current_timestamp")
+             .HasColumnName("CREATE_AT");
+
                 entity.Property(e => e.Id)
                     .HasPrecision(11)
                     .HasColumnName("ID");
@@ -294,6 +300,10 @@ namespace MarketStore.Models
                     .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.ExpireDate)
+                    .HasColumnType("DATE")
+                    .HasColumnName("EXPIRE_DATE");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -324,6 +334,38 @@ namespace MarketStore.Models
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.StoreId)
                     .HasConstraintName("PRODUCT_STORE_ID");
+            });
+
+            modelBuilder.Entity<ProductDiscount>(entity =>
+            {
+                entity.ToTable("PRODUCT_DISCOUNT");
+
+                entity.Property(e => e.Id)
+                    .HasPrecision(11)
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.DiscountDate)
+                    .HasColumnType("DATE")
+                    .HasColumnName("DISCOUNT_DATE")
+                    .HasDefaultValueSql("CURRENT_DATE");
+
+                entity.Property(e => e.DiscountPrice)
+                    .HasColumnType("NUMBER(6,2)")
+                    .HasColumnName("DISCOUNT_PRICE");
+
+                entity.Property(e => e.IsValid)
+                    .HasPrecision(1)
+                    .HasColumnName("IS_VALID")
+                    .HasDefaultValueSql("1\n");
+
+                entity.Property(e => e.ProductId)
+                    .HasPrecision(11)
+                    .HasColumnName("PRODUCT_ID");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductDiscounts)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("SYS_C00230501");
             });
 
             modelBuilder.Entity<ProductImage>(entity =>
@@ -441,6 +483,11 @@ namespace MarketStore.Models
                     .IsUnicode(false)
                     .HasColumnName("NAME");
 
+                entity.Property(e => e.CreateAt)
+                .HasPrecision(6)
+                .HasDefaultValueSql("current_timestamp")
+                .HasColumnName("CREATE_AT");
+
                 entity.HasOne(d => d.StoreCategory)
                     .WithMany(p => p.Stores)
                     .HasForeignKey(d => d.CategoryId)
@@ -487,6 +534,11 @@ namespace MarketStore.Models
 
                 entity.HasIndex(e => e.CustomerId, "SYS_C00220490")
                     .IsUnique();
+
+                entity.Property(e => e.CreateAt)
+             .HasPrecision(6)
+             .HasDefaultValueSql("current_timestamp")
+             .HasColumnName("CREATE_AT");
 
                 entity.Property(e => e.Id)
                     .HasPrecision(11)

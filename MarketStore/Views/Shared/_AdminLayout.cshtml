@@ -26,6 +26,19 @@
     <!-- Custom styles for this template-->
     <link href="~/admin/css/sb-admin-2.css" rel="stylesheet">
     <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+
+
+    <style>
+        @@media print {
+
+           footer, .navbar-nav, .scroll-to-top,
+           #logoutModal,button, ::-webkit-scrollbar, .card-header {
+                display: none !important
+            }
+        }
+
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -142,9 +155,7 @@
                         <a class="collapse-item"
                            asp-action="Index"
                            asp-controller="Users">All Users</a>
-                        <a class="collapse-item"
-                           asp-action="Create"
-                           asp-controller="Parents">Add Users</a>
+
                     </div>
                 </div>
             </li>
@@ -154,21 +165,25 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Reports
+                Reports and Feedback
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                   aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Reposts</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                   data-target="#collapseTwo433"
+                   aria-expanded="true" aria-controls="collapseTwo433">
+                    <i class="fas fa-fw  fa-file-medical-alt"></i>
+                    <span>Reports</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseTwo433" class="collapse" aria-labelledby="headingTwo"
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Reports</h6>
-                        <a class="collapse-item" asp-controller="Events"
-                           asp-action="Index">Reports</a>
+                        <a class="collapse-item"
+                           asp-action="StoreReport"
+                           asp-controller="Reports">Report</a>
+                        <div class="collapse-divider"></div>
+
                     </div>
                 </div>
             </li>

@@ -42,7 +42,7 @@ namespace MarketStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
             ViewData["StoreId"] = storeId;
-            ViewBag.Stores = new SelectList(await _context.Stores.ToListAsync(),"Id","Name",storeId);
+            ViewBag.Stores = new SelectList(await _context.Stores.ToListAsync(), "Id", "Name", storeId);
 
             var products = _context.Products
                 .Include(s => s.Store).Include(c => c.Category)
@@ -52,7 +52,7 @@ namespace MarketStore.Controllers
             {
                 products = products.Where(p => p.StoreId == storeId);
             }
-             
+
 
 
             if (!String.IsNullOrEmpty(searchString))
@@ -110,7 +110,7 @@ namespace MarketStore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Cost,Quantitiy,CategoryId,StoreId,FormFiles")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Cost,Quantitiy,ExpireDate,CategoryId,StoreId,FormFiles")] Product product)
         {
             if (ModelState.IsValid)
             {
