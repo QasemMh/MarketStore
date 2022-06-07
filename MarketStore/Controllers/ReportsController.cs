@@ -4,6 +4,7 @@ using MarketStore.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,12 @@ namespace MarketStore.Controllers
         }
 
 
-        public async Task<IActionResult> StoreFinancialReport(DateTime? fromDate, DateTime? toDate)
+        public async Task<IActionResult> StoreFinancialReport(long? storeId, DateTime? fromDate, DateTime? toDate)
         {
+            ViewBag.Stores = new SelectList(await _context.Stores.ToListAsync(), "Id", "Name", storeId);
+
+            if (storeId == null) return View(new List<ProductSalesViewModel>());
+
             DateTime today = DateTime.Today;
 
             if (fromDate.HasValue)
@@ -54,9 +59,25 @@ namespace MarketStore.Controllers
             }
 
 
-            var store = await _context.Stores.FirstOrDefaultAsync();
+            var store = await _context.Stores
+                .Include(s => s.StoreCategory)
+                .FirstOrDefaultAsync(s => s.Id == storeId);
+
+            if (store == null) return NotFound();
+
+
+
+
             var productsIds = await _context.Products.Where(p => p.StoreId == store.Id)
                 .Select(p => p.Id).ToListAsync();
+
+
+
+            //viewBag for store data
+            ViewBag.Store = store;
+            ViewBag.StoreProductCount = productsIds.Count();
+
+
 
             var productsSalesQuery = _context.OrderLines.Include(o => o.Order)
                 .Where(o => productsIds.Contains(o.ProductId) &&
@@ -131,6 +152,31 @@ namespace MarketStore.Controllers
         }
 
 
+        public async Task<IActionResult> ExpiredProduct(long? storeId)
+        {
+            ViewBag.Stores = new SelectList(await _context.Stores.ToListAsync(), "Id", "Name", storeId);
+
+            var expiredProduct = _context.Products
+                .Include(p => p.Store)
+                .Where(p => p.ExpireDate < DateTime.Now.Date);
+
+            if (storeId != null)
+            {
+                var store = await _context.Stores.FirstOrDefaultAsync(s => s.Id == storeId);
+                ViewBag.Store = store;
+                expiredProduct = expiredProduct.Where(p => p.StoreId == storeId);
+                var modelFilterd = await expiredProduct.ToListAsync();
+                ViewBag.StoreProductCount = expiredProduct.Count();
+
+                return View(modelFilterd);
+            }
+
+            var model = await expiredProduct.ToListAsync();
+            ViewBag.TotalExpired = expiredProduct.Count();
+            return View(model);
+        }
+
+ 
 
     }
 }

@@ -1,12 +1,11 @@
-﻿@model List<ProductSalesViewModel>
-
+﻿@model List<Product>
 @{
-    ViewData["Title"] = "Report";
+    ViewData["Title"] = "Expired Products";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
-<h1 class="h3 mb-4 text-gray-800">Store Financial Report</h1>
+<h1 class="h3 mb-4 text-gray-800">Expired Products Report</h1>
 
 
 <div class="row">
@@ -18,30 +17,17 @@
 
 
                 <div class="w-100" id="form-filterd">
-                    <form asp-action="StoreFinancialReport" method="get">
+                    <form asp-action="ExpiredProduct" method="get">
                         <div class="card-body">
                             <div class="row align-content-center">
 
                                 <div class="col-md-12">
-
                                     <div class="form-group w-50">
                                         <label for="userId">Select Store</label>
                                         <select class="form-control" required name="storeId" id="storeId"
                                                 asp-items="@ViewBag.Stores">
                                             <option selected disabled>---Select Store---</option>
                                         </select>
-                                    </div>
-
-
-                                    <div class="form-group w-50 w-50">
-                                        <label for="fromDate">From</label>
-                                        <input type="date" id="fromDate"
-                                               value="@(ViewBag.fromDate?? "")" class="form-control" name="fromDate" />
-                                    </div>
-                                    <div class="form-group w-50 w-50">
-                                        <label for="toDate">To</label>
-                                        <input type="date" id="toDate"
-                                               value="@(ViewBag.toDate?? "")" class="form-control" name="toDate" />
                                     </div>
                                 </div>
 
@@ -51,7 +37,7 @@
                             <button class="btn btn-outline-success" type="submit">
                                 <i class="fas fa-sort-alpha-up"></i> Filter
                             </button>
-                            <a class="btn btn-outline-secondary" asp-action="StoreFinancialReport">
+                            <a class="btn btn-outline-secondary" asp-action="ExpiredProduct">
                                 <i class="fas fa-undo"></i> Reset
                             </a>
                         </div>
@@ -65,9 +51,8 @@
                     {
                         <ul class="list-group list-group-horizontal-lg">
                             <li class="list-group-item">Store:  @ViewBag.Store.Name</li>
-                            <li class="list-group-item">Store Products:  @ViewBag.StoreProductCount</li>
-                            <li class="list-group-item">Category:  @ViewBag.Store.StoreCategory.Name</li>
-                            <li class="list-group-item">Report Date:@(ViewBag.fromDate?? "") / @(ViewBag.toDate?? "") </li>
+                            <li class="list-group-item">Store Expired Products:  @ViewBag.StoreProductCount</li>
+                            <li class="list-group-item">Report Date: @DateTime.Now.Date.ToString() </li>
                         </ul>
 
                     }
@@ -85,11 +70,12 @@
                         <tbody>
                             <tr>
                                 <th>Id</th>
+                                <th>Store</th>
                                 <th>Product Name</th>
                                 <th>Product Price</th>
+                                <th>Product Expire Date</th>
                                 <th>Product in Stock</th>
-                                <th>Product Sales</th>
-                                <th>Total Sales(jo)</th>
+                                <th>Total losses (jo)</th>
                             </tr>
                             @{
                                 int index = 1;
@@ -97,32 +83,46 @@
                             }
                             @foreach (var item in Model)
                             {
-                                total += item.Total;
+                                total += item.Price * item.Quantitiy.Value;
                                 <tr>
                                     <td>@(index++)</td>
-                                    <td>@item.Product.Name</td>
-                                    <td>@item.Product.Price</td>
-                                    <td>@item.Product.Quantitiy</td>
-                                    <td>@item.Sales</td>
-                                    <td>@item.Total</td>
-
+                                    <td>
+                                        <a asp-action="ExpiredProduct"
+                                       asp-route-storeId="@item.StoreId">@item.Store.Name</a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Index"
+                                       asp-controller="Products"
+                                       asp-route-searchString="@item.Name">@item.Name</a>
+                                    </td>
+                                    <td>@item.Price</td>
+                                    <td>@item.ExpireDate.Value.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.Quantitiy</td>
+                                    <td>@(item.Price * item.Quantitiy.Value) jo</td>
                                 </tr>
                             }
                             <tr>
-                                <th colspan="5">Total </th>
-                                <th>@total</th>
+                                <th colspan="6">Total Losses </th>
+                                <th>@total jo</th>
                             </tr>
+                            @if (ViewBag.TotalExpired != null)
+                            {
+                                <tr>
+                                    <th colspan="6">Total Expired Product Count </th>
+                                    <th>@ViewBag.TotalExpired</th>
+                                </tr>
+                            }
+
                             @if (ViewBag.Store != null)
                             {
                                 <tr>
-                                    <th colspan="6" class="text-center">Store Information</th>
+                                    <th colspan="7" class="text-center">Store Information</th>
                                 </tr>
 
                                 <tr>
                                     <th>Store:  @ViewBag.Store.Name</th>
-                                    <th>Store Products:  @ViewBag.StoreProductCount</th>
-                                    <th>Category:  @ViewBag.Store.StoreCategory.Name</th>
-                                    <th colspan="3">Report Date:@(ViewBag.fromDate?? "") / @(ViewBag.toDate?? "") </th>
+                                    <th colspan="3">Store Expired Products:  @ViewBag.StoreProductCount</th>
+                                    <th colspan="3">Report Date: @DateTime.Now.Date.ToString()</th>
                                 </tr>
                             }
                         </tbody>
