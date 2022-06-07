@@ -31,12 +31,11 @@
     <style>
         @@media print {
 
-           footer, .navbar-nav, .scroll-to-top,
-           #logoutModal,button, ::-webkit-scrollbar, .card-header {
+            footer, .navbar-nav, .scroll-to-top,
+            #logoutModal, button, ::-webkit-scrollbar, .card-header {
                 display: none !important
             }
         }
-
 
     </style>
 </head>
@@ -181,9 +180,12 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item"
                            asp-action="StoreReport"
-                           asp-controller="Reports">Report</a>
+                           asp-controller="Reports">Stores Report</a>
                         <div class="collapse-divider"></div>
 
+                        <a class="collapse-item"
+                           asp-action="StoreFinancialReport"
+                           asp-controller="Reports">Store Financial Report</a>
                     </div>
                 </div>
             </li>
