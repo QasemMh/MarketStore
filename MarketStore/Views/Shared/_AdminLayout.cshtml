@@ -32,7 +32,7 @@
         @@media print {
 
             footer, .navbar-nav, .scroll-to-top,
-            #logoutModal, button, ::-webkit-scrollbar, .card-header {
+            #logoutModal, button, ::-webkit-scrollbar, #form-filterd{
                 display: none !important
             }
         }
@@ -186,6 +186,11 @@
                         <a class="collapse-item"
                            asp-action="StoreFinancialReport"
                            asp-controller="Reports">Store Financial Report</a>
+
+                        <a class="collapse-item"
+                           asp-action="ExpiredProduct"
+                           asp-controller="Reports">Expired Product Report</a>
+                        <div class="collapse-divider"></div>
                     </div>
                 </div>
             </li>

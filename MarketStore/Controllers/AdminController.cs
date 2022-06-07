@@ -159,7 +159,7 @@ namespace MarketStore.Controllers
                    .FirstOrDefaultAsync(u => u.Email == user.Email.ToLower()).Result != null)
                 {
                     ViewData["Edit"] = "Edit";
-                    ModelState.AddModelError("Username", "Email Address already exists");
+                    ModelState.AddModelError("Email", "Email Address already exists");
                     return View(user);
                 }
 
