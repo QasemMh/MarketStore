@@ -17,10 +17,21 @@ namespace MarketStore.Controllers
         {
             _context = context;
         }
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             if (HttpContext.Session.GetString("userId") != null)
                 return RedirectToAction("Index", "Home");
+
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
 
 
             return View(new User());
@@ -29,6 +40,16 @@ namespace MarketStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User user)
         {
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
 
             if (ModelState.IsValid)
             {
@@ -74,12 +95,22 @@ namespace MarketStore.Controllers
 
             return View(user);
         }
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
 
             if (HttpContext.Session.GetString("userId") != null)
                 return RedirectToAction("Index", "Home");
 
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
 
             return View(new RegisterUserViewModel());
         }
@@ -87,6 +118,17 @@ namespace MarketStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel viewModel)
         {
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
             if (ModelState.IsValid)
             {
                 AccountService accountService = new AccountService();

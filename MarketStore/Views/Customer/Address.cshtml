@@ -20,7 +20,14 @@
             <hr class="my-0">
             <div class="card-body">
                 <form asp-action="Address" method="POST">
-                    <input type="hidden" value="@ViewBag.addressId" name="addressId" />
+
+                    @if (ViewBag.addressId != null)
+                    {
+                        <input type="hidden" value="@ViewBag.addressId" name="addressId" />
+                        <input type="hidden" asp-for="Id" />
+
+                    }
+
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label asp-for="Address1" class="form-label">Address 1</label>
@@ -60,7 +67,7 @@
 </div>
 
 
-                        @section Scripts {
+@section Scripts {
 
 
     @{

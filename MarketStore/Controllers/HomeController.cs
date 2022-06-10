@@ -25,6 +25,18 @@ namespace MarketStore.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
             var viewModel = new HomeViewModel
             {
                 Sliders = await _context.Sliders.ToListAsync(),
@@ -114,6 +126,21 @@ namespace MarketStore.Controllers
                 ProductsCategories = productCategories,
                 Stores = stores
             };
+
+
+
+            //website data
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
             return View(viewModel);
         }
         public async Task<IActionResult> Product(long? id)
@@ -132,6 +159,19 @@ namespace MarketStore.Controllers
                 .Where(p => p.ProductId == product.Id).ToListAsync();
 
 
+
+            //website data
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
             return View(new ProductViewModel { Product = product, ProductImages = images });
         }
 
@@ -140,7 +180,23 @@ namespace MarketStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Contact()
         {
-            return View(await _context.WebsiteInfos.FirstOrDefaultAsync());
+            //website data
+
+           var model = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (model == null)
+                model = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
+            //website data
+            ViewBag.WebsiteInfo = model;
+
+            return View(model);
         }
 
         [HttpPost]

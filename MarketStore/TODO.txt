@@ -23,3 +23,9 @@
         add active page to admin dashboard
         **
         add create at to views
+        **
+        check if customer not admin when order
+        **
+        add search page
+        **
+        add index to dashboard

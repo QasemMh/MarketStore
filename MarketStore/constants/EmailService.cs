@@ -63,7 +63,7 @@ namespace MarketStore.constants
                 // set smtp-client with basicAuthentication
                 mySmtpClient.UseDefaultCredentials = false;
                 NetworkCredential basicAuthenticationInfo = new
-                  NetworkCredential("qm84028@gmail.com", "kasem2000");
+                  NetworkCredential("qm84028@gmail.com", "symygvvpsvfabsbo");
                 mySmtpClient.Credentials = basicAuthenticationInfo;
 
                 // add from,to mailaddresses
