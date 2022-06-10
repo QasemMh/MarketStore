@@ -27,10 +27,12 @@ namespace MarketStore.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            if (cart != null)
+
+            if (cart != null && cart.Count > 0)
             {
                 ViewBag.cart = cart;
                 ViewBag.total = cart.Sum(item => item.Product.Price * item.Quantity);
@@ -39,16 +41,30 @@ namespace MarketStore.Controllers
             if (HttpContext.Session.GetString("userId") != null)
                 ViewBag.IsLogin = true;
 
+
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
             return View();
         }
         public async Task<IActionResult> Checkout()
         {
+
+
             if (HttpContext.Session.GetString("userId") == null)
                 return RedirectToAction("Login", "Authentication");
 
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            if (cart == null)
-                return RedirectToAction("Index", "Home");
+            if (cart == null || cart.Count == 0)
+                return RedirectToAction("Index", "Cart");
 
             var userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
             var user = await _context.Users.Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == userId);
@@ -59,6 +75,19 @@ namespace MarketStore.Controllers
 
             ViewBag.HasVisa = creditCards != null ? true : false;
             ViewBag.HasAddress = address != null ? true : false;
+
+
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
+
 
             return View(new CheckoutViewModel { CreditCard = creditCards, Address = address, Cart = cart });
         }
@@ -72,7 +101,7 @@ namespace MarketStore.Controllers
                     return BadRequest();
 
                 var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-                if (cart == null)
+                if (cart == null || cart.Count == 0)
                     return BadRequest();
 
                 if (!CheckCart(cart).Result) return BadRequest();
@@ -172,9 +201,13 @@ namespace MarketStore.Controllers
         {
             List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
             int index = isExist(id);
-            cart.RemoveAt(index);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return Ok();
+            if (index != -1)
+            {
+                cart.RemoveAt(index);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -216,6 +249,7 @@ namespace MarketStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Confirmation()
         {
+
             if (HttpContext.Session.GetString("userId") == null)
                 return NotFound();
 
@@ -245,6 +279,17 @@ namespace MarketStore.Controllers
             //send email
             await EmailService.SendAsync(viewModel, _webHostEnvironment.ContentRootPath);
 
+            //
+            ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            if (ViewBag.WebsiteInfo == null)
+                ViewBag.WebsiteInfo = new WebsiteInfo
+                {
+                    LogoName = "Logo",
+                    Email = "Email@gmail.com",
+                    Location = "location",
+                    Phone = "079000000",
+                    BrefDescription = "BrefDescription"
+                };
             return View(viewModel);
         }
 

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     <!-- Favicon-->
     <link rel="shortcut icon" href="img/fav.png">
     <!-- Author Meta -->
-    <meta name="author" content="CodePixar">
+    <meta name="author" content="">
     <!-- Meta Description -->
     <meta name="description" content="">
     <!-- Meta Keyword -->
@@ -16,7 +16,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>@ViewData["Title"] - Karma Shop   </title>
+    <title>@ViewData["Title"] -  @ViewBag.WebsiteInfo.LogoName  </title>
 
 
     <!-- CSS============================================= -->
@@ -53,8 +53,9 @@
             <nav class="navbar navbar-expand-lg navbar-light main_box">
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" asp-action="Index">
-                        <img src="~/home/img/logo.png" alt="">
+                    <a class="navbar-brand logo_h btn" style="border:none" asp-controller="Home"  asp-action="Index">
+                       @* <img src="~/home/img/logo.png" alt="">*@
+                      @ViewBag.WebsiteInfo.LogoName
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,16 +67,16 @@
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" asp-action="Index">Home</a>
+                                <a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" asp-action="Shop">Shop</a>
+                                <a class="nav-link" asp-action="Shop" asp-controller="Home">Shop</a>
                             </li>
 
 
                             <li class="nav-item">
-                                <a class="nav-link" asp-action="Contact">Contact</a>
+                                <a class="nav-link" asp-action="Contact" asp-controller="Home">Contact</a>
                             </li>
 
 
@@ -125,6 +126,9 @@
 
     </header>
     <!-- End Header Area -->
+
+
+
     @RenderBody()
 
 
@@ -138,42 +142,13 @@
                     <div class="single-footer-widget">
                         <h6>About Us</h6>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
-                            magna aliqua.
+                           @ViewBag.WebsiteInfo.BrefDescription
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4  col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Newsletter</h6>
-                        <p>Stay update with our latest</p>
-                        <div class="" id="mc_embed_signup">
+            
 
-                            <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                  method="get" class="form-inline">
-
-                                <div class="d-flex flex-row">
-
-                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
-                                           required="" type="email">
-
-
-                                    <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-                                    <div style="position: absolute; left: -5000px;">
-                                        <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-                                    </div>
-
-                                    <!-- <div class="col-lg-4 col-md-4">
-                                                <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-                                            </div>  -->
-                                </div>
-                                <div class="info"></div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <h6>Follow Us</h6>
                         <p>Let us be social</p>
@@ -190,8 +165,8 @@
                 <p class="footer-text m-0">
                     <!-- Link back to Karma Shop can't be removed. Template is licensed under CC BY 3.0. -->
                     Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                    All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i>
-                    by <a asp-action="Index" asp-controller="Home">Karma Shop</a>
+                    All rights reserved <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    by <a asp-action="Index" asp-controller="Home"> @ViewBag.WebsiteInfo.LogoName</a>
                     <!-- Link back to Karma Shop can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>

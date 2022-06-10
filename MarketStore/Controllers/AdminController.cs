@@ -25,14 +25,22 @@ namespace MarketStore.Controllers
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //reomve this
-            HttpContext.Session.SetString("userId", "1");
-            HttpContext.Session.SetString("username", "Admin");
+           //reomve this
+           // HttpContext.Session.SetString("userId", "1");
+           // HttpContext.Session.SetString("username", "Admin");
 
             if (HttpContext.Session.GetString("userId") == null)
                 return RedirectToAction("Index", "Home");
+
+
+            long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var role = _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId).Result.Name == "Admin";
+            if (!role)
+                return RedirectToAction("Index", "Home"); ;
+
 
 
             ViewData["ordersCount"] = _context.Orders.CountAsync().Result;
@@ -42,18 +50,6 @@ namespace MarketStore.Controllers
 
             return View();
         }
-
-
-        public IActionResult Report()
-        {
-             
-            return View(_context.Products.ToList());
-        }
-
-
-
-
-
 
         public async Task<IActionResult> Home()
         {

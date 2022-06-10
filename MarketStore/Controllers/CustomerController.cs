@@ -20,14 +20,22 @@ namespace MarketStore.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //reomve this
-            HttpContext.Session.SetString("userId", "21");
-            HttpContext.Session.SetString("username", "qasem1");
+            //   HttpContext.Session.SetString("userId", "21");
+            // HttpContext.Session.SetString("username", "qasem1");
+
 
             if (HttpContext.Session.GetString("userId") == null)
                 return RedirectToAction("Index", "Home");
+
+            long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var role = _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId).Result.Name == "Customer";
+            if (!role)
+                return RedirectToAction("Index", "Home");
+
 
             return View();
         }
@@ -37,23 +45,36 @@ namespace MarketStore.Controllers
             long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
             var user = await _context.Users
                 .Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == userId);
-            var addressDb = await _context.Addresses
-                .FirstOrDefaultAsync(a => a.Id == user.Customer.AddressId);
 
-            ViewBag.addressId = user.Customer.AddressId;
-            return View(addressDb);
+            if (user.Customer.AddressId.HasValue)
+            {
+                var addressDb = await _context.Addresses
+                    .FirstOrDefaultAsync(a => a.Id == user.Customer.AddressId);
+
+                ViewBag.addressId = user.Customer.AddressId;
+                return View(addressDb);
+            }
+            return View(new Address());
         }
         [HttpPost]
         public async Task<IActionResult> Address(long? addressId, Address address)
         {
-            if (addressId == null) return NotFound();
+            long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
+            var user = await _context.Users
+                .Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return NotFound();
 
             if (ModelState.IsValid)
             {
-                var userAddress = await _context.Addresses.FirstOrDefaultAsync(a => a.Id == addressId);
-                if (userAddress == null) _context.Addresses.Add(address);
-                else _context.Addresses.Update(address);
-
+                if (addressId == null)
+                {
+                    user.Customer.Address = address;
+                    _context.Update(user);
+                }
+                else
+                {
+                    _context.Addresses.Update(address);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Address));
             }
@@ -71,7 +92,7 @@ namespace MarketStore.Controllers
                 .Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == userId);
 
             var userVisa = await _context.CreditCards
-                .FirstOrDefaultAsync(a => a.Id == user.Customer.Id);
+                .FirstOrDefaultAsync(a => a.CustomerId == user.Customer.Id);
 
             ViewBag.userId = user.Customer.Id;
 
@@ -85,7 +106,7 @@ namespace MarketStore.Controllers
 
             if (ModelState.IsValid)
             {
-                var userVisa = await _context.CreditCards.FirstOrDefaultAsync(a => a.Id == userId);
+                var userVisa = await _context.CreditCards.FirstOrDefaultAsync(a => a.CustomerId == userId);
                 if (userVisa == null)
                 {
                     creditCard.Balance = 500;
@@ -101,10 +122,6 @@ namespace MarketStore.Controllers
             ModelState.AddModelError("SecurityCode", "Error, Please Try Again");
             return View(creditCard);
         }
-
-
-
-
 
 
         public async Task<IActionResult> Orders(int? pageNumber,

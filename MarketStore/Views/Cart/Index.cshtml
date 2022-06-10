@@ -41,7 +41,13 @@
                             @foreach (var item in ViewBag.cart as List<CartItem>)
                             {
 
-                                <tr>
+                                <tr class="style:opacity; transition:opacity 0.3s ease">
+                                    <td style="font-size:24px;">
+                                        <button type="button" data-itemid="@item.Product.Id"
+                                        class="btn btn-outline-danger remove-item">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
                                     <td>
                                         <div class="media">
                                             <div class="d-flex" style="max-width:300px;max-height:200px">
@@ -69,8 +75,8 @@
                                             data-itemid="@item.Product.Id"
 
                                             type="button">
-                                                                                                                                                                                <i class="lnr lnr-chevron-up"></i>
-                                                                                                                                                                            </button>
+                                                                                                                                                                                                                                                                                                        <i class="lnr lnr-chevron-up"></i>
+                                                                                                                                                                                                                                                                                                    </button>
                                             <button onclick="let result = document.getElementById('sst-@(item.Product.Id)');
                                             let sst=result.value; if( !isNaN( sst ) && sst>
                                         1) result.value--;return false;"
@@ -179,6 +185,7 @@
 
         let btnsIncrement = document.querySelectorAll(".increase");
         let btnsDecrement = document.querySelectorAll(".reduced");
+        let btnsRemove = document.querySelectorAll(".remove-item");
 
         btnsIncrement.forEach(btn => {
             btn.addEventListener("click", function(event) {
@@ -219,6 +226,56 @@
 
         });
 
+
+        btnsRemove.forEach(btn => {
+            btn.addEventListener("click", function(event) {
+
+                btn.disabled = true;
+
+                let formData = new FormData();
+                formData.append("id", btn.dataset.itemid);
+
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You will remove this item from cart!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#aaa',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("Cart/Remove", {
+                            method: 'POST',
+                            body: formData
+                        }).then(res => {
+                            if (res.ok) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'item has been deleted from cart.',
+                                    'success'
+                                )
+                                btn.parentNode.parentNode.style.opacity = "0";
+
+                                setTimeout(() => {
+                                    btn.parentNode.parentNode.parentNode.removeChild(btn.parentNode.parentNode)
+                                }, 1000)
+
+                            }
+
+                        });
+
+                    }
+                    btn.removeAttribute('disabled');
+
+
+
+                });
+            });
+
+        });
 
 
 
