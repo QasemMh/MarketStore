@@ -23,6 +23,17 @@ namespace MarketStore.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        public IActionResult Search(string searchTerm)
+        {
+            if (String.IsNullOrEmpty(searchTerm)) return RedirectToAction(nameof(Shop));
+
+            return RedirectToAction(nameof(Shop),new { searchString = searchTerm });
+
+           
+        }
+
+
+
         public async Task<IActionResult> Index()
         {
 
@@ -39,6 +50,7 @@ namespace MarketStore.Controllers
 
             var viewModel = new HomeViewModel
             {
+                Reviews = await _context.Reviews.ToListAsync(),
                 Sliders = await _context.Sliders.ToListAsync(),
                 CategoryList = await _context.StoreCategories.Take(10).ToListAsync(),
                 Products = await _context.Products
@@ -182,7 +194,7 @@ namespace MarketStore.Controllers
         {
             //website data
 
-           var model = await _context.WebsiteInfos.FirstOrDefaultAsync();
+            var model = await _context.WebsiteInfos.FirstOrDefaultAsync();
             if (model == null)
                 model = new WebsiteInfo
                 {

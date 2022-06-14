@@ -39,7 +39,13 @@ namespace MarketStore.Controllers
             }
             ViewBag.IsLogin = false;
             if (HttpContext.Session.GetString("userId") != null)
-                ViewBag.IsLogin = true;
+            {
+                var userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                bool isCustomer = _context.Roles.FirstOrDefaultAsync(r=>r.Id==user.RoleId).Result.Name == "Customer";
+                ViewBag.IsLogin = isCustomer;
+
+            }
 
 
             ViewBag.WebsiteInfo = await _context.WebsiteInfos.FirstOrDefaultAsync();
@@ -259,7 +265,7 @@ namespace MarketStore.Controllers
                 .Include(c => c.Customer).FirstOrDefaultAsync(u => u.Id == userId);
 
             var customerAddress = await _context.Addresses
-                .FirstOrDefaultAsync(a => a.Id == user.CustomerId);
+                .FirstOrDefaultAsync(a => a.Id == user.Customer.AddressId);
 
             var order = await _context.Orders
                 .Include(c => c.Customer).ThenInclude(u => u.User)

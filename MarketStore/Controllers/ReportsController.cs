@@ -68,7 +68,8 @@ namespace MarketStore.Controllers
 
 
 
-            var productsIds = await _context.Products.Where(p => p.StoreId == store.Id)
+            var productsIds = await _context.Products
+                .Where(p => p.StoreId == store.Id)
                 .Select(p => p.Id).ToListAsync();
 
 
@@ -79,7 +80,8 @@ namespace MarketStore.Controllers
 
 
 
-            var productsSalesQuery = _context.OrderLines.Include(o => o.Order)
+            var productsSalesQuery = _context.OrderLines
+                .Include(o => o.Order)
                 .Where(o => productsIds.Contains(o.ProductId) &&
                 o.Order.OrderDate >= fromDate &&
                 o.Order.OrderDate <= toDate
@@ -91,8 +93,12 @@ namespace MarketStore.Controllers
                     Result = p.Sum(p => p.Quantity),
                 });
 
+
+
             var productsSales = await productsSalesQuery.ToListAsync();
-            var products = await _context.Products.Where(p => productsIds.Contains(p.Id)).ToListAsync();
+            var products = await _context.Products
+                .Where(p => productsIds.Contains(p.Id))
+                .ToListAsync();
 
             var viewModel = new List<ProductSalesViewModel>();
 
