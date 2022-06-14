@@ -7,6 +7,76 @@
 
 @section Style{
 
+
+    <style>
+        .testimonial1 {
+            color: #8d97ad;
+            font-weight: 300;
+        }
+
+            .testimonial1 h1,
+            .testimonial1 h2,
+            .testimonial1 h3,
+            .testimonial1 h4,
+            .testimonial1 h5,
+            .testimonial1 h6 {
+                color: #3e4555;
+            }
+
+            .testimonial1 .bg-light {
+                background-color: #f4f8fa !important;
+            }
+
+            .testimonial1 .subtitle {
+                color: #8d97ad;
+                line-height: 24px;
+            }
+
+            .testimonial1 .testi1 .card-body {
+                padding: 35px;
+            }
+
+            .testimonial1 .testi1 .thumb {
+                padding: 10px 20px 10px;
+                padding-left: 90px;
+                margin-left: -35px;
+            }
+
+                .testimonial1 .testi1 .thumb .thumb-img {
+                    width: 60px;
+                    left: 20px;
+                    top: -10px;
+                }
+
+            .testimonial1 .testi1 h5 {
+                line-height: 30px;
+                font-size: 18px;
+            }
+
+            .testimonial1 .testi1 .devider {
+                height: 1px;
+                background: rgba(120, 130, 140, 0.13);
+                width: 100px;
+            }
+
+            .testimonial1 .bg-success-gradiant {
+                background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+            }
+
+            .testimonial1 .card.card-shadow {
+                -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+                box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+            }
+
+            .testimonial1 .owl-theme .owl-dots .owl-dot.active span,
+            .testimonial1 .owl-theme .owl-dots .owl-dot:hover span {
+                background: orange;
+            }
+    </style>
+
+
+
+
     <style>
         .banner-area {
             min-height: 100vh
@@ -20,6 +90,8 @@
             text-decoration: none
         }
     </style>
+
+
 }
 
 
@@ -33,7 +105,7 @@
                         <!-- single-slide -->
                         @foreach (var item in Model.Sliders)
                     {
-                        <div class="row single-slide align-items-center d-flex">
+                        <div class="row  align-items-center d-flex">
                             <div class="col-lg-5 col-md-6">
                                 <div class="banner-content">
                                     <h1> @item.Title </h1>
@@ -247,6 +319,51 @@
     </div>
 </section>
 <!-- end product Area -->
+
+<div class="testimonial1 py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h4 class="my-3">Check what our Customers are Saying</h4>
+                <h6 class="subtitle font-weight-normal">
+                    You can relay on our amazing features list and also our customer
+                    services will be great experience for you without doubt
+                </h6>
+            </div>
+        </div>
+        <!-- Row  -->
+        <div class="owl-carousel owl-theme testi1 mt-4">
+            @foreach (var item in Model.Reviews)
+            {
+                <div class="item">
+                    <div class="card card-shadow border-0 mb-4">
+                        <div class="card-body">
+                            <div class="position-relative thumb bg-success-gradiant d-inline-block text-white mb-4">
+                                <img src="~/images/@item.Image"
+                                 alt="wrapkit"
+                                 class="thumb-img position-absolute rounded-circle" />
+                                @item.Name
+                            </div>
+                            <h5 class="font-weight-light">
+                                @item.Review1
+                            </h5>
+                            <span class="devider d-inline-block my-3"></span>
+                            <h6 class="font-weight-normal">
+                                @item.JobTitle
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @section Scripts
     {
     <script>
@@ -290,6 +407,27 @@
             });
 
         })
+    </script>
+
+
+     <script>
+      $(".testi1").owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: false,
+        dots: true,
+        autoplay: true,
+        responsiveClass: true,
+        responsive: {
+          0: {
+            items: 1,
+            nav: false,
+          },
+          1024: {
+            items: 2,
+          },
+        },
+      });
     </script>
 
 }

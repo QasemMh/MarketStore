@@ -20,23 +20,33 @@ namespace MarketStore.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool couponError=false)
         {
-            //reomve this
-            //   HttpContext.Session.SetString("userId", "21");
-            // HttpContext.Session.SetString("username", "qasem1");
-
 
             if (HttpContext.Session.GetString("userId") == null)
                 return RedirectToAction("Index", "Home");
 
             long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.Include(u => u.Customer)
+                .FirstOrDefaultAsync(u => u.Id == userId);
             var role = _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId).Result.Name == "Customer";
             if (!role)
                 return RedirectToAction("Index", "Home");
 
 
+            var userVisa = await _context.CreditCards
+                .FirstOrDefaultAsync(a => a.CustomerId == user.Customer.Id);
+
+            if (userVisa != null)
+            {
+                ViewBag.hasVisa = true;
+            }
+            else
+            {
+                ViewBag.hasVisa = false;
+            }
+            ViewBag.Name = $"{user.Customer.FirstName} {user.Customer.LastName}";
+            ViewBag.CouponError = couponError;
             return View();
         }
 
@@ -301,6 +311,35 @@ namespace MarketStore.Controllers
             HttpContext.Session.Remove("username");
             return RedirectToAction("Index", "Home");
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> RequestFund(string coupon)
+        {
+            if (HttpContext.Session.GetString("userId") == null)
+                return RedirectToAction(nameof(Index), new { couponError = true });
+            if (String.IsNullOrEmpty(coupon))
+                return RedirectToAction(nameof(Index), new { couponError = true });
+
+            if (coupon.Equals("123456"))
+            {
+                long userId = Convert.ToInt64(HttpContext.Session.GetString("userId"));
+                var user = await _context.Users.Include(u => u.Customer)
+                    .FirstOrDefaultAsync(u => u.Id == userId);
+
+                var userVisa = await _context.CreditCards
+                                .FirstOrDefaultAsync(a => a.CustomerId == user.Customer.Id);
+                userVisa.Balance += 500;
+                _context.CreditCards.Update(userVisa);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index), new { couponError = true });
+        }
+
+
 
     }
 }

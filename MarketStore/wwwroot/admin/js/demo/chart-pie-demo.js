@@ -72,7 +72,7 @@ var ctx = document.getElementById("myPieChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ['Male', 'Female'],
+        labels: ['Customer', 'Admin'],
         datasets: data
     },
     options: options

@@ -8,6 +8,7 @@ namespace MarketStore.ViewModels
         public List<Slider> Sliders { get; set; }
         public List<StoreCategory> CategoryList { get; set; }
         public List<Product> Products { get; set; }
-         
+        public List<Review> Reviews { get; set; }
+
     }
 }

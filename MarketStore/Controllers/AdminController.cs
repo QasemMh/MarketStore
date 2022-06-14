@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -26,10 +27,7 @@ namespace MarketStore.Controllers
 
 
         public async Task<IActionResult> Index()
-        {
-           //reomve this
-           // HttpContext.Session.SetString("userId", "1");
-           // HttpContext.Session.SetString("username", "Admin");
+        { 
 
             if (HttpContext.Session.GetString("userId") == null)
                 return RedirectToAction("Index", "Home");
@@ -42,6 +40,44 @@ namespace MarketStore.Controllers
                 return RedirectToAction("Index", "Home"); ;
 
 
+
+            //data for charts
+            //0 > 1-5
+            //1 > 5-10
+            //2 > 10-15
+            //3 > 15-20
+            //4 > 20-25
+            //5 > 25-30
+            List<decimal> totals = new List<decimal>() { 111, 222, 333, 444, 555, 666 };
+            DateTime date = DateTime.Now.Date;
+
+            //for (int i = 1; i <= 25; i+=5)
+            //{
+            //    var firstDayOfMonth = new DateTime(date.Year, date.Month, i);
+            //    var fiveDayOfMonth = new DateTime(date.Year, date.Month, i+5);
+            //    var ordersIds = await _context.Orders
+            //          .Where(o => o.OrderDate >= firstDayOfMonth && o.OrderDate <= fiveDayOfMonth)
+            //          .Select(o => o.Id).ToListAsync();
+
+            //    var total = _context.OrderLines
+            //         .Include(o => o.Product)
+            //         .Where(o => ordersIds.Contains(o.OrderId))
+            //         .Sum(o => o.Product.Price * o.Quantity);
+
+            //    totals.Append(total);
+
+            //}
+
+            ViewBag.oneToFive = totals[0];
+            ViewBag.oneToFive2 = totals[1];
+            ViewBag.oneToFive3 = totals[2];
+            ViewBag.oneToFive4 = totals[3];
+            ViewBag.oneToFive5 = totals[4];
+            ViewBag.oneToFive6 = totals[5];
+
+
+            ViewBag.Customers = await _context.Users.Where(u => u.CustomerId != null).CountAsync();
+            ViewBag.Admins = await _context.Users.Where(u => u.CustomerId == null).CountAsync();
 
             ViewData["ordersCount"] = _context.Orders.CountAsync().Result;
             ViewData["usersCount"] = _context.Users.CountAsync().Result;
