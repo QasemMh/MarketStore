@@ -2,6 +2,10 @@
 Many people find it difficult to know the stores available in a particular mall, and
 also difficult to know the products that are sold in these stores.
 
+Preview My Work(Video):
+https://streamable.com/6zt9fg
+
+
 ## System Overview
 This is First Project For Tahaulf Training.<br>
 The system is an integrated program developed to save time and effort.<br> 
@@ -58,4 +62,4 @@ The system consists of the following main parts:
 - Visual Studio 2022
 - Visual Studio Code
 
-https://streamable.com/6zt9fg
+
