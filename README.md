@@ -58,4 +58,4 @@ The system consists of the following main parts:
 - Visual Studio 2022
 - Visual Studio Code
 
-[![Demo]](https://youtu.be/tN7W1kXwtbk)
+https://streamable.com/6zt9fg
